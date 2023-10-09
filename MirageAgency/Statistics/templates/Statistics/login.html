@@ -1,16 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Login</title>
+    <link type='text/css' href='{% static "statistics/css/login.css" %}' rel='stylesheet' >
 </head>
 <body>
+    <div class="container">
+        <form action="{% url 'login' %}" method="POST" >
+            {% csrf_token %}
+            <p>Welcome</p>
+            <input type="text" name="{{ form.username.name }}" class="custom-input" placeholder="Username"><br>
+            <input type="text" name="{{form.password.name}}" class="custom-input" placeholder="Password"><br>
+            <button type="submit">Log in</button>
+         </form>
 
-    <form action="{% url 'login' %}" method="POST" >
-        {% csrf_token %}
-        {{form.username}}
-        {{form.password}}
-        <button type="submit">Log in</button>
-     </form>
+        <div class="drops">
+            <div class="drop drop-1"></div>
+            <div class="drop drop-2"></div>
+            <div class="drop drop-3"></div>
+            <div class="drop drop-4"></div>
+            <div class="drop drop-5"></div>
+        </div>
+    </div>
 </body>
 </html>

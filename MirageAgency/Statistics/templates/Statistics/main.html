@@ -10,35 +10,56 @@
     <link type='text/css' href='{% static "statistics/css/style.css" %}' rel='stylesheet' >
 </head>
 <body>
-    <div class="container">
-        <table class="table-content">
-            <thead>
-                <tr>
-                    <th><p>Man id</p></th>
-                    <th><p>Lady id</p></th>
-                    <th><p>Date</p></th>
-                    <th><p>Operation</p></th>
-                    <th><p>Dollars</p></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for i in transaction_list %}
-                <tr>
-                    <td>{{ i.Man_ID}}</td>
-                    <td>{{ i.Lady_ID}}</td>
-                    <td>{{ i.Date|slice:"0:16"}}</td>
-                    <td>{{ i.Operation_type}}</td>
-                    <td>{{ i.Sum}}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="5" style="text-align: center;"><p>Total: {{ total }}$</p></td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
+    <header>
+        <img src="/static/statistics/images/logo.png" alt="header-img" class="header__left">
+        <div class="logo__text"><p>InLove.Agency<br>Statistics</p></div>
+        <nav>
+            <ul class="nav__links">
+                <li><a href="{% url 'statistics' %}">Statistics <img src="/static/statistics/images/statistic_icon.png" alt="header-img" class="btn_icon"></a></li>
+            </ul>
+            <div class="logout"><a href="{% url 'logout' %}">Exit <img src="/static/statistics/images/exit_icon.png" alt="header-img" class="btn_icon"></a></div>
+        </nav>
+    </header>
+    <div class="body_wrapper">
+        <div class="body_block">
 
+        </div>
+        <div class="container">
+            <table class="table-content">
+                <thead>
+                    <tr>
+                        <th><p>№</p></th>
+                        <th><p>Man id</p></th>
+                        <th><p>Lady id</p></th>
+                        <th><p>Date</p></th>
+                        <th><p>Operation</p></th>
+                        <th><p>Dollars</p></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in transaction_list %}
+                    <tr>
+                        <td>{{ i.pk}}</td>
+                        <td>{{ i.Man_ID}}</td>
+                        <td>{{ i.Lady_ID}}</td>
+                        <td>{{ i.Date|slice:"0:16"}}</td>
+                        <td>{{ i.Operation_type}}</td>
+                        <td>{{ i.Sum}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6" style="text-align: center;"><p>Total: {{ total }}$</p></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="body_block">
+            <div class="date_container">
+                <input type="date">
+            </div>
+        </div>
+    </div>
 </body>
 </html>

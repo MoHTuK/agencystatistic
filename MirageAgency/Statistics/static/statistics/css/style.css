@@ -1,15 +1,44 @@
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+}
 body {
-    background: linear-gradient(45deg, #fc466b, #8B008B);
+    background: linear-gradient(to top right, #fc466b, #8B008B);
     height: 100vh;
     font-family: 'Montserrat', sans-serif;
-    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+
+
+}
+.body_wrapper {
+    display: flex;
+    justify-content:center;
 }
 .container {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    padding: 30px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 10px ;
+    padding: 20px
+}
+.body_block {
+    width: 375px;
+}
+.date_container {
+    margin: 100px 100px;
+    padding: 20px 30px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 20px;
     border-left: 1px solid rgba(255, 255, 255, 0.3);
@@ -22,8 +51,9 @@ body {
     font-size: 1.2rem;
     margin-top: 0;
     margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
+
 
 .table-content {
     border-collapse: collapse;
@@ -51,4 +81,87 @@ body {
     padding-top: 20px
 }
 
+li,a {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
 
+    color: #edf0f1;
+    text-decoration: none;
+    opacity: 1;
+    font-size: 1.1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+
+}
+header {
+
+    padding: 10px 10%;
+    background: rgba(255, 255, 255, 0.3);
+
+}
+header nav li{
+    position: relative;
+    right: 23px;
+}
+.nav__links {
+    display: flex;
+    justify-content: center;
+    align-item: center;
+}
+.nav__links li {
+     display: inline-block;
+     padding: 0px 20px;
+}
+.nav__links li a {
+     padding: 9px 25px;
+     background-color: #ff99dd;
+     border: none;
+     border-radius: 200px;
+     cursor: pointer;
+     transition: all 0.3 ease 0s;
+}
+.nav__links li a:hover {
+     background-color: #ff00aa;
+}
+header .logout{
+  position: absolute;
+  top: 25px;
+  right: 60px;
+  font-size: 17px;
+}
+
+header .logout a{
+    padding: 9px 25px;
+     background-color: #ff99dd;
+     border: none;
+     border-radius: 200px;
+     cursor: pointer;
+     transition: all 0.3 ease 0s;
+}
+header .logout a:hover {
+     background-color: #ff00aa;
+}
+.header__left{
+  position: absolute;
+  height: 80px;
+  width: 80px;
+  left: 50px;
+  top: 0px;
+}
+.logo__text {
+    position: absolute;
+}
+.logo__text p{
+    font-weight: 600;
+    color: #fff;
+    opacity: 0.7;
+    font-size: 1.2rem;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.btn_icon{
+  position: absolute;
+  height: 35px;
+  width: 35px;
+
+}

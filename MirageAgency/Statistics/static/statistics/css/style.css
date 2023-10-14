@@ -6,7 +6,7 @@ html {
 
 }
 body {
-    background: linear-gradient(to top right, #fc466b, #8B008B);
+    background: linear-gradient(to top right, #fc466b, #3449eb);
     height: 100vh;
     font-family: 'Montserrat', sans-serif;
     margin: 0;
@@ -34,15 +34,48 @@ body {
     padding: 20px
 }
 .body_block {
-    width: 375px;
+    width: 360px;
 }
 .date_container {
-    margin: 100px 100px;
-    padding: 20px 30px;
+    width: 200px;
+    height: 100px;
+    margin: 30px 65px;
+    padding: 20px 20px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 20px;
     border-left: 1px solid rgba(255, 255, 255, 0.3);
     border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+.date_container2 {
+    width: 200px;
+    height: 150px;
+    margin: 30px 65px;
+    padding: 20px 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+.user_info {
+    width: 200px;
+    height: 100px;
+    margin: 30px 40px;
+    padding: 20px 20px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    text-align: center;
+}
+.user_info p {
+
+    font-weight: 600;
+    color: #fff;
+    opacity: 0.7;
+    font-size: 1.2rem;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
 .container p{
     font-weight: 600;
@@ -85,7 +118,7 @@ li,a {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
 
-    color: #edf0f1;
+    color: black;
     text-decoration: none;
     opacity: 1;
     font-size: 1.1rem;
@@ -113,14 +146,14 @@ header nav li{
 }
 .nav__links li a {
      padding: 9px 25px;
-     background-color: #ff99dd;
+     background-color: #ffe6ff;
      border: none;
      border-radius: 200px;
      cursor: pointer;
      transition: all 0.3 ease 0s;
 }
 .nav__links li a:hover {
-     background-color: #ff00aa;
+     background-color: #ffccff;
 }
 header .logout{
   position: absolute;
@@ -131,14 +164,14 @@ header .logout{
 
 header .logout a{
     padding: 9px 25px;
-     background-color: #ff99dd;
+     background-color: #ffe6ff;
      border: none;
      border-radius: 200px;
      cursor: pointer;
      transition: all 0.3 ease 0s;
 }
 header .logout a:hover {
-     background-color: #ff00aa;
+     background-color: #ffccff;
 }
 .header__left{
   position: absolute;
@@ -165,3 +198,55 @@ header .logout a:hover {
   width: 35px;
 
 }
+.date_btn{
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+
+    color: black;
+    text-decoration: none;
+    opacity: 1;
+    font-size: 1.1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+     margin-top: 20px;
+     margin-left: 46px;
+     padding: 9px 25px;
+     background-color: #ffe6ff;
+     border: none;
+     border-radius: 200px;
+     cursor: pointer;
+     transition: all 0.3 ease 0s;
+
+}
+.date_btn:hover{
+    background-color: #ffccff;
+}
+input[type="date"]{
+    margin-left: 27px;
+    padding: 9px 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 200px;
+    cursor: pointer;
+    transition: all 0.3 ease 0s;
+    background-color: #ffe6ff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    color: black;
+    text-decoration: none;
+    opacity: 1;
+    font-size: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+
+}
+input[type="date"]:hover{
+    background: #ffccff;
+    box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+

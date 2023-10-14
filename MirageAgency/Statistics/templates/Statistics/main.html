@@ -22,7 +22,19 @@
     </header>
     <div class="body_wrapper">
         <div class="body_block">
-
+            <div class="user_info">
+                {% if lady_name%}
+                <p>Name: {{ lady_name }}</p>
+                {% endif %}
+                <p>Total: {{ total }}$</p>
+                {% if start_date and end_date %}
+                <p>Interval : {{ start_date}} - {{ end_date}}</p>
+                {% elif today_date%}
+                <p>Date : {{ today_date }}</p>
+                {% else %}
+                <p>Date : {{ max_date }}</p>
+                {% endif %}
+            </div>
         </div>
         <div class="container">
             <table class="table-content">
@@ -50,16 +62,29 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="6" style="text-align: center;"><p>Total: {{ total }}$</p></td>
+                        <td colspan="6" style="text-align: center;"></td>
                     </tr>
                 </tfoot>
             </table>
         </div>
         <div class="body_block">
             <div class="date_container">
-                <input type="date">
+                <form action="{% url 'statistics' %}" method="POST" >
+                    {% csrf_token %}
+                    <input type="date" name="selected_date" max="{{ max_date }}">
+                    <button type="submit" class="date_btn">Accept</button>
+                </form>
+            </div>
+            <div class="date_container2">
+                <form action="{% url 'statistics' %}" method="POST" >
+                    {% csrf_token %}
+                    <input type="date" name="start_date" max="{{ max_date }}">
+                    <input type="date" name="end_date" max="{{ max_date }}">
+                    <button type="submit" class="date_btn">Accept</button>
+                </form>
             </div>
         </div>
     </div>
+    <h1>{{ date }}</h1>
 </body>
 </html>

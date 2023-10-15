@@ -25,7 +25,10 @@ def get_statistics_today(request):
     response = requests.post(api_url, data=data)
     response_data = response.json()
     total = response_data['total']
-    lady_name = response_data['list'][0]['name']
+    try:
+        lady_name = response_data['list'][0]['name']
+    except:
+        lady_name = ''
     for transaction in response_data["list"]:
         if Transaction.objects.filter(Date=transaction['date'], Lady_ID__username=transaction['ladyID']):
             continue

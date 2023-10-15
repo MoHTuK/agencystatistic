@@ -143,7 +143,7 @@ def statistics(request):
         start_date = result[3]
         end_date = result[4]
 
-        return render(request, 'statistics/main.html',
+        return render(request, 'Statistics/main.html',
                       context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
                                'max_date': today_valid, 'start_date': start_date, 'end_date': end_date})
 
@@ -154,11 +154,11 @@ def statistics(request):
         lady_name = result[2]
         today_date = result[3]
 
-        return render(request, 'statistics/main.html',
+        return render(request, 'Statistics/main.html',
                       context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
                                'max_date': today_valid, 'today_date': today_date})
 
-    return render(request, 'statistics/main.html',
+    return render(request, 'Statistics/main.html',
                   context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
                            'max_date': today_valid})
 
@@ -171,7 +171,7 @@ def login_view(request):
             login(request, form.get_user())
             return redirect('statistics')
     form = AuthenticationForm()
-    return render(request, 'statistics/login.html', context={'form': form})
+    return render(request, 'Statistics/login.html', context={'form': form})
 
 
 def logout_view(request):

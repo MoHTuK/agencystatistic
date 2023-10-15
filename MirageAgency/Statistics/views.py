@@ -4,11 +4,15 @@ from Statistics.models import Transaction
 from django.shortcuts import render, redirect
 import requests
 import datetime
+import pytz
+
+
 
 
 def get_statistics_today(request):
     user = request.user
-    today = datetime.date.today()
+    timezone = pytz.timezone('Europe/Kiev')
+    today = datetime.datetime.now(timezone)
     today_valid = today.strftime('%Y-%m-%d')
     login = user.username
     password = request.session.get('user_password', None)
@@ -130,7 +134,9 @@ def get_statistics_interval(request):
 
 
 def statistics(request):
-    today = datetime.date.today()
+
+    timezone = pytz.timezone('Europe/Kiev')
+    today = datetime.datetime.now(timezone)
     today_valid = today.strftime('%Y-%m-%d')
 
     result = get_statistics_today(request)

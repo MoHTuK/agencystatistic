@@ -25,7 +25,7 @@ DATABASE_URL = 'postgresql://postgres:zFEeTpSwjL7Qa7mDfHC0@containers-us-west-10
 SECRET_KEY = 'django-insecure-(2e*z6qszl==ka$exv(jnrkus=%7r@$rl3@g@x96c$)hjt0!97'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 

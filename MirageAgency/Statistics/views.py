@@ -173,7 +173,7 @@ def statistics(request):
 
 
 def login_view(request):
-    request.session.cycle_key()
+
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():

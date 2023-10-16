@@ -13,7 +13,8 @@
     <div class="container">
         <form action="{% url 'login' %}" method="POST" >
             {% csrf_token %}
-            <p>Welcome</p>
+            <p>Welcome to</p>
+            <p>InLove.Agency</p>
             <input type="text" name="{{ form.username.name }}" class="custom-input" placeholder="Username"><br>
             <input type="password" name="{{form.password.name}}" class="custom-input" placeholder="Password"><br>
             <button type="submit">Log in</button>

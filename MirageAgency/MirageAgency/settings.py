@@ -134,4 +134,3 @@ WHITENOISE_INDEX_FILE = True
 
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
 SESSION_COOKIE_NAME = f'my_session_cookie{random.randint(1,10000)}'  # Уникальное имя куки для сессии
-SESSION_SAVE_EVERY_REQUEST = True

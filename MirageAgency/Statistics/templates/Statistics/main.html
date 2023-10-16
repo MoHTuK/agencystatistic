@@ -37,35 +37,39 @@
             </div>
         </div>
         <div class="container">
-            <table class="table-content">
-                <thead>
-                    <tr>
-                        <th><p>№</p></th>
-                        <th><p>Man id</p></th>
-                        <th><p>Lady id</p></th>
-                        <th><p>Date</p></th>
-                        <th><p>Operation</p></th>
-                        <th><p>Dollars</p></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in transaction_list %}
-                    <tr>
-                        <td>{{ i.pk}}</td>
-                        <td>{{ i.Man_ID}}</td>
-                        <td>{{ i.Lady_ID}}</td>
-                        <td>{{ i.Date|slice:"0:16"}}</td>
-                        <td>{{ i.Operation_type}}</td>
-                        <td>{{ i.Sum}}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="6" style="text-align: center;"></td>
-                    </tr>
-                </tfoot>
-            </table>
+            {% if transaction_list %}}
+                <table class="table-content">
+                    <thead>
+                        <tr>
+                            <th><p>№</p></th>
+                            <th><p>Man id</p></th>
+                            <th><p>Lady id</p></th>
+                            <th><p>Date</p></th>
+                            <th><p>Operation</p></th>
+                            <th><p>Dollars</p></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in transaction_list %}
+                        <tr>
+                            <td>{{ i.pk}}</td>
+                            <td>{{ i.Man_ID}}</td>
+                            <td>{{ i.Lady_ID}}</td>
+                            <td>{{ i.Date|slice:"0:16"}}</td>
+                            <td>{{ i.Operation_type}}</td>
+                            <td>{{ i.Sum}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6" style="text-align: center;"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            {% else %}
+                <h1>No transaction today</h1>
+            {% endif %}
         </div>
         <div class="body_block">
             <div class="date_container">

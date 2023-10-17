@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="container">
-            {% if transaction_list %}}
+            {% if transaction_list %}
                 <table class="table-content">
                     <thead>
                         <tr>
@@ -82,8 +82,8 @@
             <div class="date_container2">
                 <form action="{% url 'statistics' %}" method="POST" >
                     {% csrf_token %}
-                    <input type="date" name="start_date" max="{{ max_date }}">
-                    <input type="date" name="end_date" max="{{ max_date }}">
+                    <input type="date" name="start_date" max="{{ max_date }}" placeholder="DD-MM-YYYY">
+                    <input type="date" name="end_date" max="{{ max_date }}" placeholder="DD-MM-YYYY">
                     <button type="submit" class="date_btn">Accept</button>
                 </form>
             </div>

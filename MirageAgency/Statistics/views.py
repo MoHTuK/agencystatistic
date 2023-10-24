@@ -98,16 +98,13 @@ def get_statistics_interval(request):
     start_date_str = request.POST['start_date']
     end_date_str = request.POST['end_date']
 
-    end_date_first = datetime.date.fromisoformat(end_date_str)
-    start_date = datetime.date.fromisoformat(start_date_str)
-    end_date = datetime.date.fromisoformat(end_date_str) + datetime.timedelta(days=1)
 
     data = {
         "login": login,
         "pass": password,
         "ladyID": login,
-        "from": start_date,
-        "to": end_date
+        "from": start_date_str,
+        "to": end_date_str
     }
     response = requests.post(api_url, data=data)
     response_data = response.json()
@@ -128,9 +125,9 @@ def get_statistics_interval(request):
                 Date=transaction['date'],
             )
             transaction_data.save()
-    transaction_list = Transaction.objects.filter(Date__gte=start_date, Date__lte=end_date,
+    transaction_list = Transaction.objects.filter(Date__gte=start_date_str, Date__lte=end_date_str,
                                                   Lady_ID=user.pk).order_by('-Date')
-    return transaction_list, total, lady_name, start_date, end_date_first
+    return transaction_list, total, lady_name, start_date_str, end_date_str
 
 
 def statistics(request):
@@ -138,6 +135,9 @@ def statistics(request):
     timezone = pytz.timezone('Europe/Kiev')
     today = datetime.datetime.now(timezone)
     today_valid = today.strftime('%Y-%m-%d')
+
+    tomorrow = today + datetime.timedelta(days=1)
+    tomorrow_valid = tomorrow.strftime('%Y-%m-%d')
 
     result = get_statistics_today(request)
     transaction_list = result[0]
@@ -154,7 +154,7 @@ def statistics(request):
 
         return render(request, 'Statistics/main.html',
                       context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
-                               'max_date': today_valid, 'start_date': start_date, 'end_date': end_date})
+                               'max_date': tomorrow_valid, 'start_date': start_date, 'end_date': end_date})
 
     if request.method == 'POST' and request.POST.get('selected_date'):
         result = get_statistics_date(request)
@@ -165,11 +165,11 @@ def statistics(request):
 
         return render(request, 'Statistics/main.html',
                       context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
-                               'max_date': today_valid, 'today_date': today_date})
+                               'max_date': tomorrow_valid, 'today_date': today_date})
 
     return render(request, 'Statistics/main.html',
                   context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
-                           'max_date': today_valid})
+                           'max_date': tomorrow_valid})
 
 
 def login_view(request):

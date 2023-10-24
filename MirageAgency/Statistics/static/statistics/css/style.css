@@ -95,7 +95,7 @@ body {
 }
 .table-content th,
 .table-content td{
-    padding: 8px 10px;
+    padding: 8px 5px;
     text-align: center;
     font-weight: 500;
     color: black;

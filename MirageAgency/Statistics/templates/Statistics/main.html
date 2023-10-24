@@ -7,18 +7,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <title>Main</title>
+    <link rel="shortcut icon" href="/static/statistics/images/favicon.png" type="image/png">
     <link type='text/css' href='{% static "statistics/css/style.css" %}' rel='stylesheet' >
 </head>
 <body>
     <header>
-        <img src="/static/statistics/images/logo.png" alt="header-img" class="header__left">
-        <div class="logo__text"><p>InLove.Agency<br>Statistics</p></div>
-        <nav>
-            <ul class="nav__links">
-                <li><a href="{% url 'statistics' %}">Statistics <img src="/static/statistics/images/statistic_icon.png" alt="header-img" class="btn_icon"></a></li>
+        <div class="logo">
+            <img src="/static/statistics/images/logo.png" alt="header-img" class="header__left">
+            <div class="logo__text"><p>InLove.Agency<br>Statistics</p></div>
+        </div>
+        <div class="center__buttons">
+            <ul>
+                <li>
+                    <a href="{% url 'statistics' %}" class="img__button">
+                        <p>Statistics</p>
+                        <img src="/static/statistics/images/statistic_icon.png" alt="header-img" class="btn__icon">
+                    </a>
+                </li>
             </ul>
-            <div class="logout"><a href="{% url 'logout' %}">Exit <img src="/static/statistics/images/exit_icon.png" alt="header-img" class="btn_icon"></a></div>
-        </nav>
+        </div>
+        <div class="right__buttons">
+            <ul>
+                <li>
+                    <a href="{% url 'logout' %}" class="img__button">
+                        <p>Exit </p>
+                        <img src="/static/statistics/images/exit_icon.png" alt="header-img" class="btn__icon">
+                    </a>
+                </li>
+            </ul>
+        </div>
     </header>
     <div class="body_wrapper">
         <div class="body_block">
@@ -71,7 +88,7 @@
                 <h1>No transaction today</h1>
             {% endif %}
         </div>
-        <div class="body_block">
+        <div class="body_block right">
             <div class="date_container">
                 <form action="{% url 'statistics' %}" method="POST" >
                     {% csrf_token %}
@@ -79,7 +96,7 @@
                     <button type="submit" class="date_btn">Accept</button>
                 </form>
             </div>
-            <div class="date_container2">
+            <div class="date_container">
                 <form action="{% url 'statistics' %}" method="POST" >
                     {% csrf_token %}
                     <input type="date" placeholder="DD-MM-YYYY" name="start_date" max="{{ max_date }}">

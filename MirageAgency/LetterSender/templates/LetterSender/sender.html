@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link type='text/css' href='{% static "statistics/css/style.css" %}' rel='stylesheet' >
+</head>
+<body>
+
+    {% if all_id %}
+        {% for id in all_id %}
+            <img class="lady_img" src="{{ id }}">
+        {% endfor %}
+    {% endif %}
+</body>
+</html>

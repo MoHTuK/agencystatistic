@@ -131,3 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 WHITENOISE_AUTOREFRESH = DEBUG
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_INDEX_FILE = True
+
+CELERY_BROKER_URL = 'redis://default:2loHi6ppFblFAHjjk2kLjF5FDjfa4BBN@roundhouse.proxy.rlwy.net:32538'
+CELERY_RESULT_BACKEND = 'redis://default:2loHi6ppFblFAHjjk2kLjF5FDjfa4BBN@roundhouse.proxy.rlwy.net:32538'
+CELERY_TIMEZONE = "Europe/Kiev"

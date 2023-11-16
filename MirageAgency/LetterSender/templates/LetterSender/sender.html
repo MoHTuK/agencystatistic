@@ -7,11 +7,13 @@
     <link type='text/css' href='{% static "statistics/css/style.css" %}' rel='stylesheet' >
 </head>
 <body>
-
-    {% if all_id %}
-        {% for id in all_id %}
-            <img class="lady_img" src="{{ id }}">
+    <a href="{% url 'pars_imgs' %}" >Pars img</a>
+    <a href="{% url 'pars_id' %}" >Pars id</a>
+    {% if all_imgs %}
+        {% for img in all_imgs %}
+            <img class="lady_img" src="{{ img.Img_url }}">
         {% endfor %}
     {% endif %}
+    {{ all_id }}
 </body>
 </html>

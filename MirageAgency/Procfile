@@ -1,1 +1,1 @@
-web: celery -A MirageAgency worker -l info --uid=0 --euid=0 --gid=0 --egid=0
+web: celery -A MirageAgency worker -l info --uid=0 --gid=0

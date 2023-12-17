@@ -78,16 +78,21 @@ WSGI_APPLICATION = 'MirageAgency.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-#DATABASES = {
-#   'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
-
 DATABASES = {
-    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1800)
+   'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('DB_HOST'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASS'),
+        'PORT': '5432',
+
+    }
 }
+
+"""DATABASES = {
+    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1800)
+}"""
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -132,8 +137,8 @@ WHITENOISE_AUTOREFRESH = DEBUG
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_INDEX_FILE = True
 
-CELERY_BROKER_URL = 'redis://default:2loHi6ppFblFAHjjk2kLjF5FDjfa4BBN@roundhouse.proxy.rlwy.net:32538'
-CELERY_RESULT_BACKEND = 'redis://default:2loHi6ppFblFAHjjk2kLjF5FDjfa4BBN@roundhouse.proxy.rlwy.net:32538'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 CELERY_TIMEZONE = "Europe/Kiev"
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'

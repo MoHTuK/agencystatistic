@@ -9,5 +9,7 @@ class LadyPhoto(models.Model):
 
 class ManAcc(models.Model):
     Id = models.CharField(max_length=255)
-    Message_status = models.BooleanField(default=False)
+    Last_msg = models.TextField(default='Nothing')
+    Last_msg_date = models.DateField(auto_now=True)
+
 

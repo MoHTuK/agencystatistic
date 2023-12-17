@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link type='text/css' href='{% static "statistics/css/style.css" %}' rel='stylesheet' >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
     <a href="{% url 'pars_imgs' %}" >Pars img</a>
@@ -14,7 +15,49 @@
             <img class="lady_img" src="{{ img.Img_url }}">
         {% endfor %}
     {% endif %}
-    {{ all_id }}
-    {{ result }}
+    {% if all_id %}
+        {% for id in all_id %}
+            <p> {{ id }} </p>
+        {% endfor %}
+    {% endif %}
+
+    <a href="#" id="startTask">Запустить задачу</a>
+    <div id="taskResult">Результат задачи будет здесь...</div>
+
+    <script>
+    $(document).ready(function() {
+        $('#startTask').click(function(event) {
+            event.preventDefault();
+            var taskId = '{{ task_id }}'; // Получаем task_id из Django контекста
+
+            var intervalId = setInterval(function() {
+                $.ajax({
+                    url: `/task_status/${taskId}/`,
+                    type: 'get',
+                    success: function(data) {
+                        if (data.status == 'SUCCESS') {
+                            clearInterval(intervalId);
+
+                            // Обработка списка ID пользователей
+                            var users = data.result; // Предположим, что это массив ID
+                            var resultHtml = '';
+                            users.forEach(function(user) {
+                                resultHtml += `<p>${user}</p><br>`; // Каждый ID в отдельной строке
+                            });
+                            $('#taskResult').html(resultHtml);
+                        }
+                    },
+                    error: function() {
+                        alert('Ошибка при получении статуса задачи');
+                    }
+                });
+            }, 1);
+        });
+    });
+    </script>
+    <form action="{% url 'main_sender_view' %}" method="POST" >
+        {% csrf_token %}
+        <button type="submit" class="date_btn">Accept</button>
+    </form>
 </body>
 </html>

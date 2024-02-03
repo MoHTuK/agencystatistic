@@ -81,12 +81,11 @@ WSGI_APPLICATION = 'MirageAgency.wsgi.application'
 DATABASES = {
    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_HOST'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASS'),
-        'PORT': '5432',
-
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'Fa6EGadc5GA63DG1dgFa6FaaEAGGg45d',
+        'HOST': 'roundhouse.proxy.rlwy.net',
+        'PORT': '45322',
     }
 }
 
@@ -137,9 +136,4 @@ WHITENOISE_AUTOREFRESH = DEBUG
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_INDEX_FILE = True
 
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
-CELERY_TIMEZONE = "Europe/Kiev"
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+

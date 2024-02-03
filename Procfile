@@ -1,1 +1,0 @@
-web: gunicorn MirageAgency.wsgi --log-file -

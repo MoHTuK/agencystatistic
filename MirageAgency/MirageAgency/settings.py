@@ -79,19 +79,8 @@ WSGI_APPLICATION = 'MirageAgency.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-   'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'Fa6EGadc5GA63DG1dgFa6FaaEAGGg45d',
-        'HOST': 'roundhouse.proxy.rlwy.net',
-        'PORT': '45322',
-    }
-}
-
-"""DATABASES = {
     'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1800)
-}"""
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

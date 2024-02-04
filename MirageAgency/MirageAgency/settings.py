@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Statistics.apps.StatisticsConfig',
-    'LetterSender.apps.LettersenderConfig'
 ]
 
 MIDDLEWARE = [

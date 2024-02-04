@@ -1,1 +1,1 @@
-web: celery -A MirageAgency worker --loglevel=info & python manage.py migrate && gunicorn MirageAgency.wsgi  --bind 0.0.0.0:$PORT
+web: gunicorn MirageAgency.wsgi  --bind 0.0.0.0:$PORT

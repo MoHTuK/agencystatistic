@@ -17,7 +17,7 @@ from whitenoise import WhiteNoise
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DATABASE_URL = 'postgresql://postgres:zFEeTpSwjL7Qa7mDfHC0@containers-us-west-104.railway.app:7098/railway'
+DATABASE_URL = 'postgresql://postgres:Fa6EGadc5GA63DG1dgFa6FaaEAGGg45d@roundhouse.proxy.rlwy.net:45322/railway'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 

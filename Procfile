@@ -1,1 +1,1 @@
-web: gunicorn MirageAgency.wsgi --log-file -
+web: python manage.py migrate && gunicorn MirageAgency.wsgi

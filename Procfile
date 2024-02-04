@@ -1,1 +1,1 @@
-web: gunicorn MirageAgency.wsgi  --bind 0.0.0.0:$PORT
+web: gunicorn agencystatistics.wsgi  --bind 0.0.0.0:$PORT

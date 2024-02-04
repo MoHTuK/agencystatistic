@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn MirageAgency.wsgi
+web: python MirageAgency/manage.py migrate && gunicorn MirageAgency.wsgi

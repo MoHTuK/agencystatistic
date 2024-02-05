@@ -49,13 +49,8 @@ def get_statistics_today(request):
             transaction_data.save()
 
     transaction_list = Transaction.objects.filter(Date__icontains=today_valid, Lady_ID=user.pk).order_by('-Date')
-    gifts_list = Transaction.objects.filter(Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'), Lady_ID=user.pk)
 
-    gifts_total = 0
-    for i in gifts_list:
-        gifts_total += i
-
-    return transaction_list, total, lady_name, gifts_total
+    return transaction_list, total, lady_name
 
 
 def get_statistics_date(request):

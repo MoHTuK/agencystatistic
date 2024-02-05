@@ -58,6 +58,8 @@ def get_statistics_date(request):
 
     api_url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=finances'
 
+    gifts_total = 0
+
     date_selector = request.POST.get('selected_date')
     data = {
         "login": login,
@@ -86,7 +88,15 @@ def get_statistics_date(request):
             )
             transaction_data.save()
     transaction_list = Transaction.objects.filter(Date__icontains=date_selector, Lady_ID=user.pk).order_by('-Date')
-    return transaction_list, total, lady_name, date_selector
+
+    gifts_list = Transaction.objects.filter(
+        Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'), Lady_ID=user.pk,
+        Date__icontains=date_selector)
+
+    for i in gifts_list:
+        gifts_total += i.Sum
+
+    return transaction_list, total, lady_name, date_selector, gifts_total
 
 
 def get_statistics_interval(request):
@@ -132,7 +142,7 @@ def get_statistics_interval(request):
                                                   Lady_ID=user.pk).order_by('-Date')
 
     gifts_list = Transaction.objects.filter(
-        Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'),Lady_ID=user.pk,
+        Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'), Lady_ID=user.pk,
         Date__gte=start_date_str, Date__lte=end_date_str)
 
     for i in gifts_list:
@@ -175,10 +185,11 @@ def statistics(request):
         total = result[1]
         lady_name = result[2]
         today_date = result[3]
+        gifts_total = result[4]
 
         return render(request, 'Statistics/main.html',
                       context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
-                               'max_date': tomorrow_valid, 'today_date': today_date})
+                               'max_date': tomorrow_valid, 'today_date': today_date, 'gifts_total': gifts_total})
 
     return render(request, 'Statistics/main.html',
                   context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,

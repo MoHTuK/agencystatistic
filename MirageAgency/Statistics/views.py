@@ -2,11 +2,9 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from Statistics.models import Transaction
 from django.shortcuts import render, redirect
-from django.db.models import Q
 import requests
 import datetime
 import pytz
-
 
 
 
@@ -49,7 +47,6 @@ def get_statistics_today(request):
             transaction_data.save()
 
     transaction_list = Transaction.objects.filter(Date__icontains=today_valid, Lady_ID=user.pk).order_by('-Date')
-
     return transaction_list, total, lady_name
 
 

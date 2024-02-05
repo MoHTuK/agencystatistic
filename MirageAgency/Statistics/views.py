@@ -18,6 +18,9 @@ def get_statistics_today(request):
     login = user.username
     password = request.session.get('user_password', None)
 
+    gifts_total = 0
+    penalties_total = 0
+
     api_url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=finances'
 
     data = {
@@ -48,7 +51,21 @@ def get_statistics_today(request):
             transaction_data.save()
 
     transaction_list = Transaction.objects.filter(Date__icontains=today_valid, Lady_ID=user.pk).order_by('-Date')
-    return transaction_list, total, lady_name
+
+    gifts_list = Transaction.objects.filter(
+        Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'), Lady_ID=user.pk,
+        Date__icontains=today_valid)
+
+    penalties_list = Transaction.objects.filter(Operation_type='Penalties', Lady_ID=user.pk,
+                                                Date__icontains=today_valid)
+
+    for i in gifts_list:
+        gifts_total += i.Sum
+
+    for i in penalties_list:
+        penalties_total += i.Sum
+
+    return transaction_list, total, lady_name, gifts_total, penalties_total
 
 
 def get_statistics_date(request):
@@ -59,6 +76,7 @@ def get_statistics_date(request):
     api_url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=finances'
 
     gifts_total = 0
+    penalties_total = 0
 
     date_selector = request.POST.get('selected_date')
     data = {
@@ -93,10 +111,16 @@ def get_statistics_date(request):
         Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'), Lady_ID=user.pk,
         Date__icontains=date_selector)
 
+    penalties_list = Transaction.objects.filter(Operation_type='Penalties', Lady_ID=user.pk,
+                                                Date__icontains=date_selector)
+
     for i in gifts_list:
         gifts_total += i.Sum
 
-    return transaction_list, total, lady_name, date_selector, gifts_total
+    for i in penalties_list:
+        penalties_total += i.Sum
+
+    return transaction_list, total, lady_name, date_selector, gifts_total, penalties_total
 
 
 def get_statistics_interval(request):
@@ -110,6 +134,7 @@ def get_statistics_interval(request):
     end_date_str = request.POST['end_date']
 
     gifts_total = 0
+    penalties_total = 0
 
 
     data = {
@@ -145,10 +170,16 @@ def get_statistics_interval(request):
         Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'), Lady_ID=user.pk,
         Date__gte=start_date_str, Date__lte=end_date_str)
 
+    penalties_list = Transaction.objects.filter(Operation_type='Penalties', Lady_ID=user.pk,
+                                                Date__gte=start_date_str, Date__lte=end_date_str)
+
     for i in gifts_list:
         gifts_total += i.Sum
 
-    return transaction_list, total, lady_name, start_date_str, end_date_str, gifts_total
+    for i in penalties_list:
+        penalties_total += i.Sum
+
+    return transaction_list, total, lady_name, start_date_str, end_date_str, gifts_total, penalties_total
 
 
 def statistics(request):
@@ -164,6 +195,10 @@ def statistics(request):
     transaction_list = result[0]
     total = result[1]
     lady_name = result[2]
+    gifts_total = result[3]
+    total_without_gifts = round(total - gifts_total, 1)
+    penalties = result[4]
+    total_without_penalties = round(total + penalties, 1)
 
     if request.method == 'POST' and request.POST.get('start_date') and request.POST.get('end_date'):
         result = get_statistics_interval(request)
@@ -173,11 +208,15 @@ def statistics(request):
         start_date = result[3]
         end_date = result[4]
         gifts_total = result[5]
+        total_without_gifts = round(total - gifts_total, 1)
+        penalties = result[6]
+        total_without_penalties = round(total + penalties, 1)
 
         return render(request, 'Statistics/main.html',
                       context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
                                'max_date': tomorrow_valid, 'start_date': start_date, 'end_date': end_date,
-                               'gifts_total': gifts_total})
+                               'gifts_total': gifts_total, 'total_without_gifts': total_without_gifts,
+                               'total_without_penalties': total_without_penalties, 'penalties': penalties})
 
     if request.method == 'POST' and request.POST.get('selected_date'):
         result = get_statistics_date(request)
@@ -185,15 +224,22 @@ def statistics(request):
         total = result[1]
         lady_name = result[2]
         today_date = result[3]
-        gifts_total = result[4]
+        gifts_total = int(result[4])
+        total_without_gifts = round(total - gifts_total, 1)
+        penalties = result[5]
+        total_without_penalties = round(total + penalties, 1)
 
         return render(request, 'Statistics/main.html',
                       context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
-                               'max_date': tomorrow_valid, 'today_date': today_date, 'gifts_total': gifts_total})
+                               'max_date': tomorrow_valid, 'today_date': today_date, 'gifts_total': gifts_total,
+                               'total_without_gifts': total_without_gifts,
+                               'total_without_penalties': total_without_penalties, 'penalties': penalties})
 
     return render(request, 'Statistics/main.html',
                   context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
-                           'max_date': tomorrow_valid})
+                           'max_date': tomorrow_valid, 'gifts_total': gifts_total,
+                           'total_without_gifts': total_without_gifts, 'penalties': penalties,
+                           'total_without_penalties': total_without_penalties})
 
 
 def login_view(request):

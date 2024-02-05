@@ -2,6 +2,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from Statistics.models import Transaction
 from django.shortcuts import render, redirect
+from django.db.models import Q
 import requests
 import datetime
 import pytz
@@ -98,6 +99,8 @@ def get_statistics_interval(request):
     start_date_str = request.POST['start_date']
     end_date_str = request.POST['end_date']
 
+    gifts_total = 0
+
 
     data = {
         "login": login,
@@ -127,7 +130,15 @@ def get_statistics_interval(request):
             transaction_data.save()
     transaction_list = Transaction.objects.filter(Date__gte=start_date_str, Date__lte=end_date_str,
                                                   Lady_ID=user.pk).order_by('-Date')
-    return transaction_list, total, lady_name, start_date_str, end_date_str
+
+    gifts_list = Transaction.objects.filter(
+        Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'),Lady_ID=user.pk,
+        Date__gte=start_date_str, Date__lte=end_date_str)
+
+    for i in gifts_list:
+        gifts_total += i.Sum
+
+    return transaction_list, total, lady_name, start_date_str, end_date_str, gifts_total
 
 
 def statistics(request):
@@ -151,10 +162,12 @@ def statistics(request):
         lady_name = result[2]
         start_date = result[3]
         end_date = result[4]
+        gifts_total = result[5]
 
         return render(request, 'Statistics/main.html',
                       context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
-                               'max_date': tomorrow_valid, 'start_date': start_date, 'end_date': end_date})
+                               'max_date': tomorrow_valid, 'start_date': start_date, 'end_date': end_date,
+                               'gifts_total': gifts_total})
 
     if request.method == 'POST' and request.POST.get('selected_date'):
         result = get_statistics_date(request)

@@ -53,6 +53,10 @@ body {
 .body_block.right .date_container{
     margin-bottom: 50px;
 }
+
+.body_block .user_info{
+    margin-bottom: 50px;
+}
 .date_container {
     padding: 20px;
     width: 100%;

@@ -66,6 +66,7 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 .user_info {
+    position: relative;
     width: 100% !important;
     padding: 20px;
     background: rgba(255, 255, 255, 0.3);
@@ -73,6 +74,13 @@ body {
     border-left: 1px solid rgba(255, 255, 255, 0.3);
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     text-align: center;
+}
+.user_info img{
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 40px;
+    height: 40px;
 }
 .user_info p {
     font-weight: 600;

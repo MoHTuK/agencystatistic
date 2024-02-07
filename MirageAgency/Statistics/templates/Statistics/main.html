@@ -53,14 +53,17 @@
                 {% else %}
                 <p>Date : {{ max_date }}</p>
                 {% endif %}
+                <img src="/static/statistics/images/total_icon.png" alt="header-img" class="btn__icon">
             </div>
             <div class="user_info">
                 <p>Gifts : {{ gifts_total }}$</p>
                 <p>Total without gifts : {{ total_without_gifts }}$</p>
+                <img src="/static/statistics/images/gift_box.png" alt="header-img" class="btn__icon">
             </div>
             <div class="user_info">
                 <p>Penalties : {{ penalties }}$</p>
                 <p>Total without penalties : {{ total_without_penalties }}$</p>
+                <img src="/static/statistics/images/sanction_icon.png" alt="header-img" class="btn__icon">
             </div>
         </div>
         <div class="container">

@@ -8,8 +8,6 @@ import datetime
 import pytz
 
 
-
-
 def get_statistics_today(request):
     user = request.user
     timezone = pytz.timezone('Europe/Kiev')

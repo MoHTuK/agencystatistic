@@ -1,4 +1,5 @@
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from Statistics.models import Transaction
 from django.shortcuts import render, redirect
@@ -180,6 +181,7 @@ def get_statistics_interval(request):
     return transaction_list, total, lady_name, start_date_str, end_date_str, gifts_total, penalties_total
 
 
+@login_required(login_url='login')
 def statistics(request):
 
     timezone = pytz.timezone('Europe/Kiev')

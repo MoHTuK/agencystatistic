@@ -45,8 +45,33 @@
             </ul>
         </div>
     </header>
-    {% for item in img_list %}
-        <img src="{{ item.image_url }}" class="lady_img">
-    {% endfor %}
+    <div class="body_wrapper_mailbot">
+        <div class="container_mailbot">
+            <form method="POST">
+            <div class="top_mail">
+
+                <label>Compose mail Form</label>
+                <textarea placeholder="Hello" class="mailbot_textarea"></textarea>
+
+            </div>
+            <div class="bottom_media">
+                <label>Media</label>
+                <div class="photo_grid" id="photos-form">
+                    {% for item in img_list %}
+                    <label class="photo-checkbox">
+                        <input type="checkbox" name="selected_photos" value="{{ item.image_id }}" onchange="checkLimit(this)"/>
+                        <img src="{{ item.image_url }}" alt="Photo {{ loop.index }}">
+                    </label>
+                {% endfor %}
+                </div>
+            </div>
+                <button type="submit" class="date_btn">Accept</button>
+            </form>
+        </div>
+        <div class="container_mailbot right">
+
+        </div>
+    </div>
+    <script src="{% static 'mailbot/js/photos.js' %}"></script>
 </body>
 </html>

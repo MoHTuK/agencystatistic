@@ -342,7 +342,37 @@ header li a:hover {
 .photo-checkbox input[type="checkbox"]:checked + .checkmark {
   opacity: 1;
 }
-
+.disabled {
+    pointer-events: none;  // Отключаем события указателя, что делает элемент некликабельным
+    opacity: 0.5;  // Снижаем прозрачность для визуального эффекта
+    color: red;
+}
+.container_mailbot .number_input {
+    display: block;
+    margin: 10px auto;
+    padding: 9px 25px;
+    border: none;
+    border-radius: 200px;
+    cursor: pointer;
+    transition: all 0.3 ease 0s;
+    background-color: #ffe6ff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    color: black;
+    text-decoration: none;
+    opacity: 1;
+    font-size: 1.3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.container_mailbot .number_input:hover {
+    background: #ffccff;
+    box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+}
+.number_input::-webkit-inner-spin-button,
+.number_input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 input[type="date"]{
     display: block;
     margin: 10px auto;

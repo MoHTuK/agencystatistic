@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'mailbot' %}" class="img__button">
+                    <a href="{% url 'mailbot' %}" id="mailbotButton" class="img__button">
                         <p>MailBot</p>
                         <img src="/static/statistics/images/mailbot_icon.png" alt="header-img" class="btn__icon">
                     </a>
@@ -44,6 +44,7 @@
                 </li>
             </ul>
         </div>
+        <script src="{% static 'mailbot/js/mailbtn.js' %}"></script>
     </header>
     <div class="body_wrapper">
         <div class="body_block">

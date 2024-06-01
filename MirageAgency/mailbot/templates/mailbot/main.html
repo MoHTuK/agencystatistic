@@ -11,6 +11,8 @@
     <link rel="icon" type="image/png" sizes="96x96" href="{% static 'statistics/images/favicon-96x96.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'statistics/images/favicon-16x16.png' %}">
     <link type='text/css' href='{% static "statistics/css/style.css" %}' rel='stylesheet' >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 <body>
     <header>
@@ -27,7 +29,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'mailbot' %}" class="img__button">
+                    <a href="{% url 'mailbot' %}" id="mailbotButton" class="img__button">
                         <p>MailBot</p>
                         <img src="/static/statistics/images/mailbot_icon.png" alt="header-img" class="btn__icon">
                     </a>
@@ -44,14 +46,16 @@
                 </li>
             </ul>
         </div>
+        <script src="{% static 'mailbot/js/mailbtn.js' %}"></script>
     </header>
     <div class="body_wrapper_mailbot">
         <div class="container_mailbot">
-            <form method="POST">
+            <form method="POST" action="{% url 'proxy_send' %}">
+                {% csrf_token %}
             <div class="top_mail">
 
                 <label>Compose mail Form</label>
-                <textarea placeholder="Hello" class="mailbot_textarea"></textarea>
+                <textarea placeholder="Hello" class="mailbot_textarea" name="messageText"></textarea>
 
             </div>
             <div class="bottom_media">
@@ -59,19 +63,33 @@
                 <div class="photo_grid" id="photos-form">
                     {% for item in img_list %}
                     <label class="photo-checkbox">
-                        <input type="checkbox" name="selected_photos" value="{{ item.image_id }}" onchange="checkLimit(this)"/>
+                        <input type="checkbox" name="selected_photos" value="{{ item.image_id }}" class="attachment" onchange="checkLimit(this)"/>
                         <img src="{{ item.image_url }}" alt="Photo {{ loop.index }}">
                     </label>
                 {% endfor %}
                 </div>
+                <button type="submit" class="date_btn" id="sendButton">Accept</button>
             </div>
-                <button type="submit" class="date_btn">Accept</button>
             </form>
         </div>
         <div class="container_mailbot right">
+            <label>Add to Blacklist</label>
+            <form method="POST" class="blacklist-form">
+                {% csrf_token %}
+                {{ blacklist_form.man_id }}
+                <button type="submit" name="submit_blacklist" class="date_btn">Add man</button>
+            </form>
 
+            <label>Add to Goldman</label>
+            <form method="POST" class="goldman-form">
+                {% csrf_token %}
+                {{ goldman_form.man_id }}
+                <button type="submit" name="submit_goldman" class="date_btn">Add man</button>
+            </form>
         </div>
+
     </div>
     <script src="{% static 'mailbot/js/photos.js' %}"></script>
+    <script src="{% static 'mailbot/js/saveform.js' %}"></script>
 </body>
 </html>

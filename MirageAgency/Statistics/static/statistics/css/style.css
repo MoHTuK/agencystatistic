@@ -84,15 +84,21 @@ body {
     flex-wrap: wrap; /* Позволяет элементам переноситься на следующую строку */
     gap: 10px; /* Устанавливает отступы между элементами */
     padding: 0 10px; /* Устанавливает отступы по краям контейнера */
+    margin-bottom: 30px;
+}
+.container_right {
+    width: 25%;
 }
 .container_mailbot.right {
-    width: 25%;
+    position: relative;
+    width: 100%;
     justify-content: center;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 20px;
     border-left: 1px solid rgba(255, 255, 255, 0.3);
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     padding: 20px;
+    margin-bottom: 30px;
 }
 .mailbot_textarea {
     height: 200px;
@@ -100,9 +106,41 @@ body {
     line-height: normal;
     padding: .8rem;
     resize: none;
-    background: #dfe0e2;
+    background: #ffe6ff;
     border-radius: 10px;
     margin-bottom: 20px;
+}
+.mailbot_textarea:hover {
+    background: #ffccff;
+}
+.recipient-selector {
+    display: flex;
+    align-items: center; /* Центрировать элементы по вертикали */
+    justify-content: space-between; /* Распределить пространство между элементами */
+    margin-bottom: 10px; /* Отступ от заголовка до текстовой области */
+}
+.recipient-selector select {
+    height: 48px;
+    width: 20%;
+    padding: 0.8rem;
+    background: #ffe6ff;
+    border-radius: 10px;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="rgba(0,0,0,0.54)" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.8em top 50%, 0;
+    background-size: 1.25em auto, 100%;
+}
+.recipient-selector select option{
+    height: 48px;
+    padding: 0.8rem;
+    background: #ffe6ff;
+}
+.recipient-selector select:hover {
+    background: #ffccff;
 }
 
 label {
@@ -279,6 +317,13 @@ header li a:hover {
     width: 35px;
     height: 35px;
 }
+.mailbot_icon {
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 70px;
+    height: 70px;
+}
 .date_btn{
     display: block;
     margin: 10px auto;
@@ -349,7 +394,7 @@ header li a:hover {
 }
 .container_mailbot .number_input {
     display: block;
-    margin: 10px auto;
+    margin: 5px auto;
     padding: 9px 25px;
     border: none;
     border-radius: 200px;

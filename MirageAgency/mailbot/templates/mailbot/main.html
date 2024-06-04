@@ -50,11 +50,16 @@
     </header>
     <div class="body_wrapper_mailbot">
         <div class="container_mailbot">
-            <form method="POST" action="{% url 'proxy_send' %}">
+            <form method="POST" class="pre_sending-form">
                 {% csrf_token %}
             <div class="top_mail">
-
-                <label>Compose mail Form</label>
+                <div class="recipient-selector">
+                    <label>Compose mail Form</label>
+                    <select name="recipient_group">
+                        <option value="online_men">Men Online</option>
+                        <option value="goldman">Goldmans</option>
+                    </select>
+                </div>
                 <textarea placeholder="Hello" class="mailbot_textarea" name="messageText"></textarea>
 
             </div>
@@ -68,27 +73,33 @@
                     </label>
                 {% endfor %}
                 </div>
-                <button type="submit" class="date_btn" id="sendButton">Accept</button>
+                <button type="submit" class="date_btn" id="sendButton">Start sending</button>
             </div>
             </form>
         </div>
-        <div class="container_mailbot right">
-            <label>Add to Blacklist</label>
-            <form method="POST" class="blacklist-form">
-                {% csrf_token %}
-                {{ blacklist_form.man_id }}
-                <button type="submit" name="submit_blacklist" class="date_btn">Add man</button>
-            </form>
-
-            <label>Add to Goldman</label>
-            <form method="POST" class="goldman-form">
-                {% csrf_token %}
-                {{ goldman_form.man_id }}
-                <button type="submit" name="submit_goldman" class="date_btn">Add man</button>
-            </form>
+        <div class="container_right">
+            <div class="container_mailbot right">
+                <label>Add to Blacklist</label>
+                <form method="POST" class="blacklist-form">
+                    {% csrf_token %}
+                    {{ blacklist_form.man_id }}
+                    <button type="submit" name="submit_blacklist" class="date_btn">Add man</button>
+                </form>
+                <img src="/static/statistics/images/blacklist_icon.png"  class="mailbot_icon">
+            </div>
+            <div class="container_mailbot right">
+                <label>Add to Goldman</label>
+                <form method="POST" class="goldman-form">
+                    {% csrf_token %}
+                    {{ goldman_form.man_id }}
+                    <button type="submit" name="submit_goldman" class="date_btn">Add man</button>
+                </form>
+                <img src="/static/statistics/images/goldman_icon.png"  class="mailbot_icon">
+            </div>
         </div>
 
     </div>
+
     <script src="{% static 'mailbot/js/photos.js' %}"></script>
     <script src="{% static 'mailbot/js/saveform.js' %}"></script>
 </body>

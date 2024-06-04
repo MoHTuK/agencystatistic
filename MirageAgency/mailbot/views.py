@@ -60,6 +60,10 @@ def proxy_send_msg(request):
 
             filtered_man_id_list = [man_id for man_id in man_id_list if man_id not in man_id_blacklist]
 
+        elif recipient_group == 'custom_list':
+            custom_list_text = request.POST.get('customListText', '')
+            str_filtered_man_id_list = [line.strip() for line in custom_list_text.splitlines() if line.strip()]
+            filtered_man_id_list = list(map(int, str_filtered_man_id_list))
 
         url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=send&list={filtered_man_id_list}&text={message_text}'
 

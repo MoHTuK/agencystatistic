@@ -55,12 +55,18 @@
             <div class="top_mail">
                 <div class="recipient-selector">
                     <label>Compose mail Form</label>
-                    <select name="recipient_group">
+                    <select name="recipient_group" id="recipient_group">
                         <option value="online_men">Men Online</option>
                         <option value="goldman">Goldmans</option>
+                        <option value="custom_list">Custom list</option>
                     </select>
                 </div>
                 <textarea placeholder="Hello" class="mailbot_textarea" name="messageText"></textarea>
+
+                <div id="additional_textarea" style="display: none;">
+                    <label>Custom list</label>
+                    <textarea placeholder="Enter custom list" class="mailbot_textarea" name="customListText"></textarea>
+                </div>
 
             </div>
             <div class="bottom_media">
@@ -99,7 +105,7 @@
         </div>
 
     </div>
-
+    <script src="{% static 'mailbot/js/custom_list.js' %}"></script>
     <script src="{% static 'mailbot/js/photos.js' %}"></script>
     <script src="{% static 'mailbot/js/saveform.js' %}"></script>
 </body>

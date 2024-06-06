@@ -86,8 +86,9 @@ def proxy_status(request):
     response = session.get(url)
     data = response.json()
     status = data['status']
+    count = data['count']
 
-    return JsonResponse({'success': True, 'status': status})
+    return JsonResponse({'success': True, 'status': status, 'count': count})
 
 
 def add_in_blacklist(request):
@@ -126,6 +127,8 @@ def mailbot(request):
     base_url = 'https://goldenbride.net'
     login_url = f'{base_url}/goldenbride/services/login'
 
+    user = request.user
+
     login_data = {
         'username': request.user.username,
         'userpass': request.session.get('user_password', None),
@@ -147,5 +150,5 @@ def mailbot(request):
     blacklist_form = BlacklistForm(request.POST)
 
     return render(request, 'mailbot/main.html', context={'img_list': img_list, 'goldman_form': goldman_form,
-                                                         'blacklist_form': blacklist_form})
+                                                         'blacklist_form': blacklist_form, 'user': user})
 

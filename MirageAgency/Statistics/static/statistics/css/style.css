@@ -100,6 +100,52 @@ body {
     padding: 20px;
     margin-bottom: 30px;
 }
+.status-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #e0e0e0;  // Нейтральный цвет фона
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    margin-left: 20px;
+}
+.status-text{
+    font-weight: 600;
+    color: #fff;
+    opacity: 0.8;
+    font-size: 1.4rem;
+    margin-left: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+}
+.red {
+    background-color: #ff0019;  // Светло-красный
+}
+
+.green {
+    background-color: #00e600;  // Светло-зеленый
+}
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2); /* Увеличиваем масштабирование */
+        opacity: 0.85; /* Уменьшаем прозрачность */
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.green {
+    animation: pulse 1.5s infinite; /* Ускоряем анимацию */
+}
+.status-indicator-block{
+    display: flex; /* Задаем flex-контейнер */
+    align-items: center; /* Центрируем элементы по вертикали */
+}
 .mailbot_textarea {
     height: 200px;
     width: 100%;

@@ -55,6 +55,7 @@ $(document).ready(function() {
         var form = this; // Сохранение ссылки на форму
         var formData = $(form).serialize(); // Сериализация данных формы
 
+
         $.ajax({
             type: 'POST',
             url: 'proxy/send_msg',
@@ -63,6 +64,9 @@ $(document).ready(function() {
                 if (response.success) {
                     console.log(response); // Выведет в консоль всё, что вернул сервер
                     alert(response.message);
+                    $('#mailingStatusIndicator').addClass('green').removeClass('red');  // Сделать индикатор зеленым
+                    $('#mailingStatusText').text('Bot working');  // Обновить текст статуса
+
 
                     var statusCheckInterval = setInterval(function() {
                         $.ajax({
@@ -73,24 +77,34 @@ $(document).ready(function() {
                                 if (statusResponse && statusResponse.status) {
                                     if (['end', 'limit', 'Stop'].includes(statusResponse.status)) {
                                         clearInterval(statusCheckInterval);
+                                        $('#mailingStatusIndicator').addClass('red').removeClass('green');  // Сменить на красный
+                                        $('#mailingStatusText').text('Bot not working');  // Обновить текст статуса
                                         console.log(`Status check ended because the status is '${statusResponse.status}'.`);
                                     }
                                 } else {
                                     // Если ответ пустой, логируем это и продолжаем проверки
                                     console.log('Received an empty or invalid status response.');
+                                    $('#mailingStatusIndicator').addClass('green').removeClass('red');  // Сделать индикатор зеленым
+                                    $('#mailingStatusText').text('Bot working');  // Обновить текст статуса
                                 }
                             },
                             error: function() {
                                 console.error('Error checking proxy status');
+                                 $('#mailingStatusIndicator').addClass('red').removeClass('green');  // В случае ошибки также сменить на красный
+                                 $('#mailingStatusText').text('Ошибка проверки статуса');  // Обновить текст статуса
                             }
                         });
                     }, 120000);
                 } else {
                     alert(response.message);
+                    $('#mailingStatusIndicator').addClass('red').removeClass('green');  // Сменить на красный если отправка не успешна
+                    $('#mailingStatusText').text('Bot not working');  // Обновить текст статуса
                 }
             },
             error: function() {
                 alert('Error processing your request');
+                $('#mailingStatusIndicator').addClass('red').removeClass('green');  // Сменить на красный в случае ошибки AJAX
+                $('#mailingStatusText').text('Ошибка обработки запроса');  // Обновить текст статуса
             }
         });
     });

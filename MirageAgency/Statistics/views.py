@@ -194,7 +194,7 @@ def statistics(request):
     result = get_statistics_today(request)
     transaction_list = result[0]
     total = result[1]
-    lady_name = result[2]
+    lady_name = request.user.first_name
     gifts_total = result[3]
     total_without_gifts = round(total - gifts_total, 1)
     penalties = result[4]
@@ -204,7 +204,7 @@ def statistics(request):
         result = get_statistics_interval(request)
         transaction_list = result[0]
         total = result[1]
-        lady_name = result[2]
+        lady_name = request.user.first_name
         start_date = result[3]
         end_date = result[4]
         gifts_total = result[5]
@@ -222,7 +222,7 @@ def statistics(request):
         result = get_statistics_date(request)
         transaction_list = result[0]
         total = result[1]
-        lady_name = result[2]
+        lady_name = request.user.first_name
         today_date = result[3]
         gifts_total = int(result[4])
         total_without_gifts = round(total - gifts_total, 1)

@@ -85,6 +85,13 @@
         </div>
         <div class="container_right">
             <div class="container_mailbot right">
+                <label>{{ user.first_name }}</label>
+                <div class="status-indicator-block">
+                    <div id="mailingStatusIndicator" class="status-indicator red"></div>
+                    <div id="mailingStatusText" class="status-text">Not working</div>
+                </div>
+            </div>
+            <div class="container_mailbot right">
                 <label>Add to Blacklist</label>
                 <form method="POST" class="blacklist-form">
                     {% csrf_token %}

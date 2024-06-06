@@ -1,4 +1,26 @@
 $(document).ready(function() {
+
+    $('#stopBotButton').on('click', function() {
+        $.ajax({
+            type: 'GET', // Или 'POST', если это необходимо по логике вашего API
+            url: 'proxy/stop', // Убедитесь, что URL соответствует настройкам вашего роутера
+            success: function(response) {
+                console.log('Bot stop response:', response);
+                if (response.success) {
+                    $('#mailingStatusIndicator').addClass('red').removeClass('green');
+                    $('#mailingStatusText').text('Bot stopped');
+                    alert('Bot stopped successfully');
+                } else {
+                    alert('Failed to stop the bot: ' + response.status);
+                }
+            },
+            error: function() {
+                alert('Error stopping the bot');
+            }
+        });
+    });
+
+
     // Обработка отправки формы Blacklist
     $('.blacklist-form').on('submit', function(e) {
         e.preventDefault(); // Предотвращение стандартной отправки формы

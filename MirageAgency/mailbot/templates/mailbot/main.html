@@ -88,7 +88,8 @@
                 <label>{{ user.first_name }}</label>
                 <div class="status-indicator-block">
                     <div id="mailingStatusIndicator" class="status-indicator red"></div>
-                    <div id="mailingStatusText" class="status-text">Not working</div>
+                    <div id="mailingStatusText" class="status-text">Bot not working</div>
+                    <button id="stopBotButton" class="date_btn">Stop Bot</button>
                 </div>
             </div>
             <div class="container_mailbot right">
@@ -115,5 +116,6 @@
     <script src="{% static 'mailbot/js/custom_list.js' %}"></script>
     <script src="{% static 'mailbot/js/photos.js' %}"></script>
     <script src="{% static 'mailbot/js/saveform.js' %}"></script>
+    <script src="{% static 'mailbot/js/statuscheck.js' %}"></script>
 </body>
 </html>

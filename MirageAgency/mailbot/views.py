@@ -86,9 +86,20 @@ def proxy_status(request):
     response = session.get(url)
     data = response.json()
     status = data['status']
-    count = data['count']
+    count = data.get('count', 0)
 
     return JsonResponse({'success': True, 'status': status, 'count': count})
+
+
+def proxy_stop(request):
+
+    session = login_request(request)
+    url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=stop'
+    response = session.get(url)
+    data = response.json()
+    status = data['status']
+
+    return JsonResponse({'success': True, 'status': status})
 
 
 def add_in_blacklist(request):

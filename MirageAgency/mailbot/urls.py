@@ -9,5 +9,6 @@ urlpatterns = [
     path('proxy/send_msg', proxy_send_msg, name='proxy_send'),
     path('proxy/save_to_blacklist', add_in_blacklist, name='add_blacklist'),
     path('proxy/save_to_goldman', add_in_goldman, name='add_goldman'),
-    path('proxy/status', proxy_status, name='proxy_status')
+    path('proxy/status', proxy_status, name='proxy_status'),
+    path('proxy/stop', proxy_stop, name='proxy_stop'),
 ]

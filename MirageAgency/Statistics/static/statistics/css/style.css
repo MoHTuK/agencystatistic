@@ -105,9 +105,13 @@ body {
     height: 20px;
     border-radius: 50%;
     background-color: #e0e0e0;  // Нейтральный цвет фона
-    transition: all 0.3s ease;
+
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     margin-left: 20px;
+}
+.status-indicator-block{
+    display: flex; /* Задаем flex-контейнер */
+    align-items: center; /* Центрируем элементы по вертикали */
 }
 .status-text{
     font-weight: 600;
@@ -116,6 +120,8 @@ body {
     font-size: 1.4rem;
     margin-left: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+    flex-grow: 1; /* Элемент займет всё доступное пространство */
+
 }
 .red {
     background-color: #ff0019;  // Светло-красный
@@ -142,10 +148,7 @@ body {
 .green {
     animation: pulse 1.5s infinite; /* Ускоряем анимацию */
 }
-.status-indicator-block{
-    display: flex; /* Задаем flex-контейнер */
-    align-items: center; /* Центрируем элементы по вертикали */
-}
+
 .mailbot_textarea {
     height: 200px;
     width: 100%;

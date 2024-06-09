@@ -124,6 +124,8 @@ $(document).ready(function() {
                             }
                         }
                     } else {
+                        $('#mailingStatusIndicator').addClass('green').removeClass('red');
+                        $('#mailingStatusText').text('Bot working');
                         console.log('Received an empty or invalid status response.');
                     }
                 },
@@ -132,6 +134,7 @@ $(document).ready(function() {
                     $('#mailingStatusIndicator').addClass('red').removeClass('green');
                     $('#mailingStatusText').text('Пробую проверить еще 1 раз');
                     setTimeout(startStatusCheck, 5000);  // Попытка повторной проверки через 5 секунд
+                    clearInterval(statusCheckInterval);  // Очищаем существующий интервал перед созданием нового
                 }
             });
         }, 120000);
@@ -161,6 +164,7 @@ $(document).ready(function() {
                     $('#mailingStatusText').text('Bot stopped');
                     shouldContinueMailing = false;  // Обновляем флаг, чтобы остановить рассылку
                     toggleFormElements(false);  // Разблокируем все элементы формы
+
                     alert('Bot stopped successfully');
                 } else {
                     alert('Failed to stop the bot: ' + response.status);

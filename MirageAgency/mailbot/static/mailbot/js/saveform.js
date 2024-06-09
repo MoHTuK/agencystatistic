@@ -120,7 +120,7 @@ $(document).ready(function() {
                                 console.log('Status ended and Men Online is selected. Planning to restart mailing in 5 seconds.');
                                 setTimeout(function() {  // Задержка перед повторным запуском
                                     sendMessages();
-                                }, 5000);
+                                }, 10000);
                             }
                         }
                     } else {

@@ -101,53 +101,54 @@ body {
     margin-bottom: 30px;
 }
 .status-indicator {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: #e0e0e0;  // Нейтральный цвет фона
-
+    background-color: #e0e0e0;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     margin-left: 20px;
 }
+
 .status-indicator-block{
-    display: flex; /* Задаем flex-контейнер */
-    align-items: center; /* Центрируем элементы по вертикали */
+    display: flex;
+    align-items: center;
+    position: relative; /* Делаем родительский блок относительным */
+    padding-left: 40px; /* Обеспечиваем пространство для индикатора */
 }
 .status-text{
     font-weight: 600;
     color: #fff;
     opacity: 0.8;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     margin-left: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
     flex-grow: 1; /* Элемент займет всё доступное пространство */
 
 }
-.red {
-    background-color: #ff0019;  // Светло-красный
+.green {
+    background-color: #00e600;  /* Светло-зеленый */
+    animation: pulse 1.5s infinite;
 }
 
-.green {
-    background-color: #00e600;  // Светло-зеленый
+.red {
+    background-color: #ff0019;  /* Светло-красный */
 }
+
 @keyframes pulse {
-    0% {
-        transform: scale(1);
+    0%, 100% {
+        transform: scale(1) translateY(-50%); /* Обеспечиваем стабильное вертикальное позиционирование */
         opacity: 1;
     }
     50% {
-        transform: scale(1.2); /* Увеличиваем масштабирование */
-        opacity: 0.85; /* Уменьшаем прозрачность */
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
+        transform: scale(1.2) translateY(-50%); /* Сохраняем вертикальное позиционирование постоянным */
+        opacity: 0.85;
     }
 }
 
-.green {
-    animation: pulse 1.5s infinite; /* Ускоряем анимацию */
-}
 
 .mailbot_textarea {
     height: 200px;

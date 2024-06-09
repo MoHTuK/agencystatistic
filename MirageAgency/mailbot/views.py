@@ -55,8 +55,9 @@ def proxy_send_msg(request):
             filtered_man_id_list = [man_id for man_id in man_id_list if man_id not in man_id_blacklist]
 
         elif recipient_group == 'goldman':
+
             man_id_blacklist = Blacklist.objects.filter(lady_id=request.user.pk).values_list('man_id', flat=True)
-            man_id_list = GoldMan.objects.values_list('man_id', flat=True)
+            man_id_list = GoldMan.objects.order_by('?')[:600].values_list('man_id', flat=True)
 
             filtered_man_id_list = [man_id for man_id in man_id_list if man_id not in man_id_blacklist]
 

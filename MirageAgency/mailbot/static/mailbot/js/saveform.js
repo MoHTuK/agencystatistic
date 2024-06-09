@@ -141,6 +141,9 @@ $(document).ready(function() {
     $('.pre_sending-form').on('submit', function(e) {
         e.preventDefault();
         shouldContinueMailing = true;  // Сбрасываем флаг при новой отправке
+        $('#recipient_group').prop('disabled', false);
+        $('.mailbot_textarea').prop('readonly', false);
+        $('input[type=checkbox]').prop('disabled', false);
         sendMessages();
         alert("Рассылка запущена успешно");
     });

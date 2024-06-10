@@ -78,8 +78,8 @@ $(document).ready(function() {
                     console.log(response); // Вывод в консоль всего, что вернул сервер
                     $('#mailingStatusIndicator').addClass('green').removeClass('red');
                     $('#mailingStatusText').text('Bot working');
-
                     startStatusCheck();
+
                 } else {
                     alert(response.message);
                     $('#mailingStatusIndicator').addClass('red').removeClass('green');
@@ -94,50 +94,48 @@ $(document).ready(function() {
         });
     }
 
-    // Начать проверку статуса
+    function checkStatus() {
+        $.ajax({
+            type: 'GET',
+            url: 'proxy/status',
+            success: function(statusResponse) {
+                if (statusResponse && statusResponse.status) {
+                    if (['end', 'limit', 'Stop'].includes(statusResponse.status)) {
+                        clearInterval(statusCheckInterval);
+                        $('#mailingStatusIndicator').addClass('red').removeClass('green');
+                        $('#mailingStatusText').text('Bot not working');
+                        console.log('Stop work');
+                        if ($('#recipient_group').val() === 'online_men' && shouldContinueMailing) {
+
+                            $('#mailingStatusIndicator').addClass('green').removeClass('red');
+                            $('#mailingStatusText').text('Bot working');
+                            $('#recipient_group').prop('disabled', false);
+                            $('.mailbot_textarea').prop('readonly', false);
+                            $('input[type=checkbox]').prop('disabled', false);  // Если есть чекбоксы для вложений или других параметров
+
+                            console.log('Status ended and Men Online is selected. Planning to restart mailing in 5 seconds.');
+                            setTimeout(sendMessages, 5000);
+                        }
+                    }
+                } else {
+                    $('#mailingStatusIndicator').addClass('green').removeClass('red');
+                    $('#mailingStatusText').text('Bot working');
+                    console.log('Received an empty or invalid status response.');
+                }
+            },
+            error: function() {
+                console.error('Error checking proxy status');
+                $('#mailingStatusText').text('Trying to check status again');
+                setTimeout(checkStatus, 5000); // Повторная проверка через 10 секунд в случае ошибки
+            }
+        });
+    }
+
     function startStatusCheck() {
         if (statusCheckInterval) {
-            clearInterval(statusCheckInterval);  // Очищаем существующий интервал перед созданием нового
+            clearInterval(statusCheckInterval);
         }
-        var statusCheckInterval = setInterval(function() {
-            $.ajax({
-                type: 'GET',
-                url: 'proxy/status',
-                success: function(statusResponse) {
-                    if (statusResponse && statusResponse.status) {
-                        if (['end', 'limit', 'Stop'].includes(statusResponse.status)) {
-                            clearInterval(statusCheckInterval);
-                            $('#mailingStatusIndicator').addClass('red').removeClass('green');
-                            $('#mailingStatusText').text('Bot not working');
-                            console.log('Stop work');
-                            // Автоматический перезапуск, если выбрано 'Men Online'
-                            if ($('#recipient_group').val() === 'online_men' && shouldContinueMailing) {
-                                $('#mailingStatusIndicator').addClass('green').removeClass('red');
-                                $('#mailingStatusText').text('Bot working');
-                                $('#recipient_group').prop('disabled', false);
-                                $('.mailbot_textarea').prop('readonly', false);
-                                $('input[type=checkbox]').prop('disabled', false);  // Если есть чекбоксы для вложений или других параметров
-                                console.log('Status ended and Men Online is selected. Planning to restart mailing in 5 seconds.');
-                                setTimeout(function() {  // Задержка перед повторным запуском
-                                    sendMessages();
-                                }, 10000);
-                            }
-                        }
-                    } else {
-                        $('#mailingStatusIndicator').addClass('green').removeClass('red');
-                        $('#mailingStatusText').text('Bot working');
-                        console.log('Received an empty or invalid status response.');
-                    }
-                },
-                error: function() {
-                    console.error('Error checking proxy status');
-                    $('#mailingStatusIndicator').addClass('red').removeClass('green');
-                    $('#mailingStatusText').text('Пробую проверить еще 1 раз');
-                    setTimeout(startStatusCheck, 5000);  // Попытка повторной проверки через 5 секунд
-                    clearInterval(statusCheckInterval);  // Очищаем существующий интервал перед созданием нового
-                }
-            });
-        }, 120000);
+        statusCheckInterval = setInterval(checkStatus, 120000); // Повтор каждые 2 минуты
     }
 
     // Обработка отправки формы

@@ -203,6 +203,8 @@ def statistics(request):
     penalties = result[4]
     total_without_penalties = round(total + penalties, 1)
 
+    print(user)
+
     if request.method == 'POST' and request.POST.get('start_date') and request.POST.get('end_date'):
         result = get_statistics_interval(request)
         transaction_list = result[0]

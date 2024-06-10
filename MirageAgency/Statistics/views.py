@@ -184,7 +184,7 @@ def get_statistics_interval(request):
 @login_required(login_url='login')
 def statistics(request):
 
-    custom_admin_user_list = [920777, 918761, 918562, 900441, 912504, 920011, 914887, 913993, 878637, 917531, 916712, 919673]
+    custom_admin_user_list = [920777, 918761, 918562, 900441, 912504, 920011, 914887, 913993, 878637, 917531, 916712, 919673, 919395]
     user = int(request.user.username)
 
     timezone = pytz.timezone('Europe/Kiev')

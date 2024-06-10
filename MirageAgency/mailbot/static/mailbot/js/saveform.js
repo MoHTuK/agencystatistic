@@ -126,7 +126,7 @@ $(document).ready(function() {
             error: function() {
                 console.error('Error checking proxy status');
                 $('#mailingStatusText').text('Trying to check status again');
-                setTimeout(checkStatus, 5000); // Повторная проверка через 10 секунд в случае ошибки
+                setTimeout(checkStatus, 7000); // Повторная проверка через 10 секунд в случае ошибки
             }
         });
     }

@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // ID элементов, к которым вы хотите применить логику
-    const ids = ['mailbotButton', 'stopBotButton', 'sendButton'];
+    const ids = ['mailbotButton', 'stopBotButton', 'sendButton'];  // ID элементов
 
     ids.forEach(function(id) {
         const element = document.getElementById(id);
         if (element) {
-            element.classList.add('disabled');
+            element.classList.add('disabled');  // Добавляем класс 'disabled' для деактивации кнопки
+            // Устанавливаем различные задержки в зависимости от кнопки
             setTimeout(() => {
-                element.classList.remove('disabled');
-            }, 5000);
+                element.classList.remove('disabled');  // Удаляем класс 'disabled' для активации кнопки
+            }, id === 'sendButton' ? 10000 : 5000);  // 10 секунд для 'sendButton', 5 секунд для остальных
         }
     });
 });

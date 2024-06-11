@@ -72,7 +72,7 @@ def proxy_send_msg(request):
             if i < 2:  # Предположим, что максимум можно прикрепить два изображения
                 url += f"&attach{i + 1}={photo}"
 
-        print(url)
+        print(f'{request.user.username} send msg /// {message_text} ')
         session.get(url)
 
         return JsonResponse({'success': True, 'message': 'Рассылка запущена '})
@@ -81,7 +81,7 @@ def proxy_send_msg(request):
 
 
 def proxy_status(request):
-
+    print(f'{request.user.username} status check ')
     session = login_request(request)
     url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=status'
     response = session.get(url)
@@ -93,7 +93,7 @@ def proxy_status(request):
 
 
 def proxy_stop(request):
-
+    print(f'{request.user.username} stop bot ')
     session = login_request(request)
     url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=stop'
     response = session.get(url)

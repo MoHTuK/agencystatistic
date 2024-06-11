@@ -52,8 +52,18 @@ $(document).ready(function() {
     });
 
     var statusCheckInterval;  // Переменная для хранения интервала
-
+    var lastRequestTime = 0;  // Время последнего запроса
+    var requestDelay = 6000;  // Минимальное время задержки между запросами в миллисекундах
     var shouldContinueMailing = false;  // Флаг для контроля продолжения рассылки
+
+    function canMakeRequest() {
+        var currentTime = new Date().getTime();
+        return (currentTime - lastRequestTime) >= requestDelay;
+    }
+
+    function updateLastRequestTime() {
+        lastRequestTime = new Date().getTime();
+    }
 
     function toggleFormElements(disabled) {
         $('#recipient_group').prop('disabled', disabled);
@@ -63,12 +73,20 @@ $(document).ready(function() {
 
     // Функция для отправки сообщений
     function sendMessages() {
+
+        if (canMakeRequest() === false) {
+            console.log('Waiting to make the next request' + (new Date().getTime() - lastRequestTime));
+            setTimeout(sendMessages, requestDelay - (new Date().getTime() - lastRequestTime));
+            return;
+        }
+
         var formData = $('.pre_sending-form').serialize(); // Получаем данные из формы
         $.ajax({
             type: 'POST',
             url: 'proxy/send_msg',
             data: formData,
              beforeSend: function() {
+                updateLastRequestTime();  // Обновляем время последнего запроса перед выполнением запроса
                 if ($('#recipient_group').val() === 'online_men') {
                     toggleFormElements(true);  // Блокируем элементы формы
                 }
@@ -95,9 +113,20 @@ $(document).ready(function() {
     }
 
     function checkStatus() {
+
+        if (canMakeRequest() === false) {
+            console.log('Waiting to make the next request' + (new Date().getTime() - lastRequestTime));
+            setTimeout(checkStatus, requestDelay - (new Date().getTime() - lastRequestTime));
+            return;
+        }
+
+
         $.ajax({
             type: 'GET',
             url: 'proxy/status',
+            beforeSend: function() {
+                updateLastRequestTime();  // Обновляем время последнего запроса перед выполнением запроса
+            },
             success: function(statusResponse) {
                 if (statusResponse && statusResponse.status) {
                     if (['end', 'limit', 'Stop'].includes(statusResponse.status)) {
@@ -114,7 +143,7 @@ $(document).ready(function() {
                             $('input[type=checkbox]').prop('disabled', false);  // Если есть чекбоксы для вложений или других параметров
 
                             console.log('Status ended and Men Online is selected. Planning to restart mailing in 5 seconds.');
-                            setTimeout(sendMessages, 5000);
+                            sendMessages()
                         }
                     }
                 } else {
@@ -126,7 +155,7 @@ $(document).ready(function() {
             error: function() {
                 console.error('Error checking proxy status');
                 $('#mailingStatusText').text('Trying to check status again');
-                setTimeout(checkStatus, 7000); // Повторная проверка через 10 секунд в случае ошибки
+                checkStatus()
             }
         });
     }
@@ -136,6 +165,40 @@ $(document).ready(function() {
             clearInterval(statusCheckInterval);
         }
         statusCheckInterval = setInterval(checkStatus, 120000); // Повтор каждые 2 минуты
+    }
+
+
+    function stopBot() {
+
+        if (canMakeRequest() === false) {
+            console.log('Waiting to make the next request' + (new Date().getTime() - lastRequestTime));
+            setTimeout(stopBot, requestDelay - (new Date().getTime() - lastRequestTime));
+            return;
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: 'proxy/stop',
+            beforeSend: function() {
+                updateLastRequestTime();  // Обновляем время последнего запроса
+            },
+            success: function(response) {
+                console.log('Bot stop response:', response);
+                if (response.success) {
+                    clearInterval(statusCheckInterval);  // Останавливаем проверку статуса
+                    $('#mailingStatusIndicator').addClass('red').removeClass('green');
+                    $('#mailingStatusText').text('Bot stopped');
+                    shouldContinueMailing = false;  // Обновляем флаг, чтобы остановить рассылку
+                    toggleFormElements(false);  // Разблокируем все элементы формы
+                    alert('Bot stopped successfully');
+                } else {
+                    alert('Failed to stop the bot: ' + response.status);
+                }
+            },
+            error: function() {
+                alert('Error stopping the bot');
+            }
+        });
     }
 
     // Обработка отправки формы
@@ -151,26 +214,6 @@ $(document).ready(function() {
 
      // Обработчик для кнопки остановки бота
     $('#stopBotButton').on('click', function() {
-        $.ajax({
-            type: 'GET',
-            url: 'proxy/stop',
-            success: function(response) {
-                console.log('Bot stop response:', response);
-                if (response.success) {
-                    clearInterval(statusCheckInterval);  // Останавливаем проверку статуса
-                    $('#mailingStatusIndicator').addClass('red').removeClass('green');
-                    $('#mailingStatusText').text('Bot stopped');
-                    shouldContinueMailing = false;  // Обновляем флаг, чтобы остановить рассылку
-                    toggleFormElements(false);  // Разблокируем все элементы формы
-
-                    alert('Bot stopped successfully');
-                } else {
-                    alert('Failed to stop the bot: ' + response.status);
-                }
-            },
-            error: function() {
-                alert('Error stopping the bot');
-            }
-        });
+        stopBot();
     });
 });

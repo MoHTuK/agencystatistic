@@ -105,9 +105,9 @@ $(document).ready(function() {
                 }
             },
             error: function() {
-                alert('Error processing your request');
                 $('#mailingStatusIndicator').addClass('red').removeClass('green');
                 $('#mailingStatusText').text('Ошибка обработки запроса');
+                sendMessages()
             }
         });
     }
@@ -196,7 +196,7 @@ $(document).ready(function() {
                 }
             },
             error: function() {
-                alert('Error stopping the bot');
+                stopBot()
             }
         });
     }

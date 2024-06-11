@@ -1,6 +1,7 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from fake_useragent import UserAgent
 from .forms import *
 from .models import *
 from django.http import JsonResponse, HttpResponse
@@ -17,7 +18,12 @@ def login_request(request):
         'userpass': request.session.get('user_password', None),
     }
 
+    # Генерация случайного User-Agent
+    user_agent = UserAgent()
+    random_user_agent = user_agent.random
+
     session = requests.Session()
+    session.headers.update({'User-Agent': random_user_agent})
     session.post(login_url, data=login_data)
 
     return session
@@ -137,18 +143,10 @@ def add_in_goldman(request):
 @login_required(login_url='login')
 def mailbot(request):
     base_url = 'https://goldenbride.net'
-    login_url = f'{base_url}/goldenbride/services/login'
 
     user = request.user
 
-    login_data = {
-        'username': request.user.username,
-        'userpass': request.session.get('user_password', None),
-    }
-
-    session = requests.Session()
-
-    login_response = session.post(login_url, data=login_data)
+    session = login_request(request)
 
     images_url = f'{base_url}/usermodule/services/agencyhelper?command=attach'
     images_url_response = session.get(images_url)

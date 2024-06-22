@@ -96,6 +96,7 @@ $(document).ready(function() {
                     console.log(response); // Вывод в консоль всего, что вернул сервер
                     $('#mailingStatusIndicator').addClass('green').removeClass('red');
                     $('#mailingStatusText').text('Bot working');
+                    alert("Рассылка запущена успешно");
                     startStatusCheck();
 
                 } else {
@@ -105,9 +106,9 @@ $(document).ready(function() {
                 }
             },
             error: function() {
+                alert('Error processing your request');
                 $('#mailingStatusIndicator').addClass('red').removeClass('green');
                 $('#mailingStatusText').text('Ошибка обработки запроса');
-                sendMessages()
             }
         });
     }
@@ -196,7 +197,7 @@ $(document).ready(function() {
                 }
             },
             error: function() {
-                stopBot()
+                alert('Error stopping the bot');
             }
         });
     }
@@ -209,7 +210,6 @@ $(document).ready(function() {
         $('.mailbot_textarea').prop('readonly', false);
         $('input[type=checkbox]').prop('disabled', false);
         sendMessages();
-        alert("Рассылка запущена успешно");
     });
 
      // Обработчик для кнопки остановки бота

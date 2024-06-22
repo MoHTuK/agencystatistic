@@ -1,4 +1,5 @@
 import json
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from fake_useragent import UserAgent
@@ -6,7 +7,6 @@ from .forms import *
 from .models import *
 from django.http import JsonResponse, HttpResponse
 import requests
-import time
 
 
 def login_request(request):
@@ -25,23 +25,10 @@ def login_request(request):
     session = requests.Session()
     session.headers.update({'User-Agent': random_user_agent})
     session.post(login_url, data=login_data)
-
     return session
 
 
-# @login_required(login_url='login')
-# def proxy_online_man(request):
-#
-#     session = login_request(request)
-#
-#     url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=online'
-#     response = session.get(url)
-#
-#     return response.json()
-
-
 def proxy_send_msg(request):
-
     session = login_request(request)
 
     online_url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=online'
@@ -63,7 +50,7 @@ def proxy_send_msg(request):
         elif recipient_group == 'goldman':
 
             man_id_blacklist = Blacklist.objects.filter(lady_id=request.user.pk).values_list('man_id', flat=True)
-            man_id_list = GoldMan.objects.order_by('?')[:600].values_list('man_id', flat=True)
+            man_id_list = GoldMan.objects.order_by('?')[:500].values_list('man_id', flat=True)
 
             filtered_man_id_list = [man_id for man_id in man_id_list if man_id not in man_id_blacklist]
 
@@ -78,7 +65,7 @@ def proxy_send_msg(request):
             if i < 2:  # Предположим, что максимум можно прикрепить два изображения
                 url += f"&attach{i + 1}={photo}"
 
-        print(f'{request.user.username} send msg /// {message_text} ')
+        print(url)
         session.get(url)
 
         return JsonResponse({'success': True, 'message': 'Рассылка запущена '})
@@ -88,9 +75,17 @@ def proxy_send_msg(request):
 
 def proxy_status(request):
     print(f'{request.user.username} status check ')
-    session = login_request(request)
+
+    login = request.user.username
+    password = request.session.get('user_password', None)
+
+    data = {
+        "login": login,
+        "pass": password,
+    }
+
     url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=status'
-    response = session.get(url)
+    response = requests.post(url, data=data)
     data = response.json()
     status = data['status']
     count = data.get('count', 0)
@@ -100,9 +95,17 @@ def proxy_status(request):
 
 def proxy_stop(request):
     print(f'{request.user.username} stop bot ')
-    session = login_request(request)
+
+    login = request.user.username
+    password = request.session.get('user_password', None)
+
+    data = {
+        "login": login,
+        "pass": password,
+    }
+
     url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=stop'
-    response = session.get(url)
+    response = requests.post(url, data=data)
     data = response.json()
     status = data['status']
 
@@ -145,11 +148,16 @@ def mailbot(request):
     base_url = 'https://goldenbride.net'
 
     user = request.user
+    login = user.username
+    password = request.session.get('user_password', None)
 
-    session = login_request(request)
+    data = {
+        "login": login,
+        "pass": password,
+    }
 
     images_url = f'{base_url}/usermodule/services/agencyhelper?command=attach'
-    images_url_response = session.get(images_url)
+    images_url_response = requests.post(images_url, data=data)
     images_url_data = images_url_response.json()
     img_list = []
 
@@ -161,4 +169,3 @@ def mailbot(request):
 
     return render(request, 'mailbot/main.html', context={'img_list': img_list, 'goldman_form': goldman_form,
                                                          'blacklist_form': blacklist_form, 'user': user})
-

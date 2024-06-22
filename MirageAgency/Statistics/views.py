@@ -1,6 +1,8 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from fake_useragent import UserAgent
+
 from Statistics.models import Transaction
 from django.shortcuts import render, redirect
 from django.db.models import Q
@@ -250,6 +252,31 @@ def statistics(request):
                            'total_without_gifts': total_without_gifts, 'penalties': penalties,
                            'total_without_penalties': total_without_penalties, 'custom_list': custom_admin_user_list,
                            'user': user})
+
+
+def login_request(request):
+    base_url = 'https://goldenbride.net'
+    login_url = f'{base_url}/goldenbride/services/login'
+    login_data = {
+        'username': request.user.username,
+        'userpass': request.POST.get('password'),
+    }
+
+    user_agent = UserAgent()
+    random_user_agent = user_agent.random
+
+    session = requests.Session()
+    session.headers.update({'User-Agent': random_user_agent})
+
+    # Аутентификация
+    response = session.post(login_url, data=login_data)
+
+    if response.ok:
+        # Сохранение кукис в Django session
+        request.session['web_cookies'] = requests.utils.dict_from_cookiejar(session.cookies)
+        request.session['user_agent'] = random_user_agent  # Сохранение User-Agent
+
+    return session
 
 
 def login_view(request):

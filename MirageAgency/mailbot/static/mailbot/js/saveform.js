@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    startStatusCheck()
+
     // Обработка отправки формы Blacklist
     $('.blacklist-form').on('submit', function(e) {
         e.preventDefault(); // Предотвращение стандартной отправки формы
@@ -186,7 +188,6 @@ $(document).ready(function() {
             success: function(response) {
                 console.log('Bot stop response:', response);
                 if (response.success) {
-                    clearInterval(statusCheckInterval);  // Останавливаем проверку статуса
                     $('#mailingStatusIndicator').addClass('red').removeClass('green');
                     $('#mailingStatusText').text('Bot stopped');
                     shouldContinueMailing = false;  // Обновляем флаг, чтобы остановить рассылку

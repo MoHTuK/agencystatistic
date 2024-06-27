@@ -1,4 +1,5 @@
 import json
+import time
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -7,6 +8,19 @@ from .forms import *
 from .models import *
 from django.http import JsonResponse, HttpResponse
 import requests
+
+
+def get_session(request):
+    user_agent = request.session.get('user_agent')
+    saved_cookies = request.session.get('web_cookies')
+    print(user_agent, saved_cookies)
+
+    # Создание новой сессии с сохраненными параметрами
+    session = requests.Session()
+    session.headers.update({'User-Agent': user_agent})
+    session.cookies = requests.utils.cookiejar_from_dict(saved_cookies)
+
+    return session
 
 
 def login_request(request):
@@ -18,18 +32,24 @@ def login_request(request):
         'userpass': request.session.get('user_password', None),
     }
 
-    # Генерация случайного User-Agent
     user_agent = UserAgent()
     random_user_agent = user_agent.random
 
     session = requests.Session()
     session.headers.update({'User-Agent': random_user_agent})
-    session.post(login_url, data=login_data)
-    return session
+
+    # Аутентификация
+    response = session.post(login_url, data=login_data)
+
+    if response.ok:
+        # Сохранение кукис в Django session
+        request.session['web_cookies'] = requests.utils.dict_from_cookiejar(session.cookies)
+        request.session['user_agent'] = random_user_agent  # Сохранение User-Agent
 
 
 def proxy_send_msg(request):
-    session = login_request(request)
+
+    session = get_session(request)
 
     online_url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=online'
 
@@ -145,6 +165,7 @@ def add_in_goldman(request):
 
 @login_required(login_url='login')
 def mailbot(request):
+    login_request(request)
     base_url = 'https://goldenbride.net'
 
     user = request.user

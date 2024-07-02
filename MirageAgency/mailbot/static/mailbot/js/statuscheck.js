@@ -2,7 +2,7 @@ $(document).ready(function() {
     // Отложенный запрос на proxy/status спустя 5 секунд после загрузки страницы
     setTimeout(function() {
         checkStatus();
-    }, 7000); // 5000 миллисекунд = 5 секунд
+    }, 1000); // 5000 миллисекунд = 5 секунд
 
     function checkStatus() {
         $.ajax({

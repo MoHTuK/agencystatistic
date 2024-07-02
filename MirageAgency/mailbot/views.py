@@ -1,26 +1,15 @@
 import json
 import time
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.shortcuts import render, redirect
 from fake_useragent import UserAgent
 from .forms import *
 from .models import *
 from django.http import JsonResponse, HttpResponse
 import requests
-
-
-def get_session(request):
-    user_agent = request.session.get('user_agent')
-    saved_cookies = request.session.get('web_cookies')
-    print(user_agent, saved_cookies)
-
-    # Создание новой сессии с сохраненными параметрами
-    session = requests.Session()
-    session.headers.update({'User-Agent': user_agent})
-    session.cookies = requests.utils.cookiejar_from_dict(saved_cookies)
-
-    return session
 
 
 def login_request(request):
@@ -32,24 +21,42 @@ def login_request(request):
         'userpass': request.session.get('user_password', None),
     }
 
-    user_agent = UserAgent()
-    random_user_agent = user_agent.random
-
     session = requests.Session()
-    session.headers.update({'User-Agent': random_user_agent})
-
-    # Аутентификация
+    user_agent = UserAgent().random
+    session.headers.update({'User-Agent': user_agent})
     response = session.post(login_url, data=login_data)
 
-    if response.ok:
-        # Сохранение кукис в Django session
-        request.session['web_cookies'] = requests.utils.dict_from_cookiejar(session.cookies)
-        request.session['user_agent'] = random_user_agent  # Сохранение User-Agent
+    if response.status_code == 200:
+        return session
+    else:
+        raise Exception("Failed to login")
+
+
+def get_session_key(username):
+    return f"api_session_{username}"
+
+
+def store_session(username, session):
+    cache.set(get_session_key(username), session, timeout=settings.SESSION_COOKIE_AGE)
+
+
+def retrieve_session(username):
+    return cache.get(get_session_key(username))
+
+
+def login_and_store_session(username, request):
+    session = login_request(request)
+    store_session(username, session)
+    return session
 
 
 def proxy_send_msg(request):
+    session = retrieve_session(request.user.username)
 
-    session = get_session(request)
+    if not session:
+        # Если сессия не найдена, выполнить логин и сохранить сессию
+        session = login_and_store_session(request.user.username, request)
+
 
     online_url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=online'
 
@@ -86,6 +93,8 @@ def proxy_send_msg(request):
                 url += f"&attach{i + 1}={photo}"
 
         print(url)
+        print(f"{request.user.username} sending")
+        print(session.headers)
         session.get(url)
 
         return JsonResponse({'success': True, 'message': 'Рассылка запущена '})

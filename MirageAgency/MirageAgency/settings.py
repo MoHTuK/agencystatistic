@@ -89,6 +89,15 @@ DATABASES = {
     'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1800)
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
+SESSION_COOKIE_AGE = 60 * 60  # 30 минут
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

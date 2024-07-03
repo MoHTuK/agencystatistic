@@ -24,12 +24,17 @@ def login_request(request):
     session = requests.Session()
     user_agent = UserAgent().random
     session.headers.update({'User-Agent': user_agent})
-    response = session.post(login_url, data=login_data)
 
-    if response.status_code == 200:
-        return session
-    else:
-        raise Exception("Failed to login")
+    while True:
+        response = session.post(login_url, data=login_data)
+        if response.status_code == 200:
+            return session
+        elif response.status_code == 429:
+            print("Rate limit reached. Waiting for 3 seconds...")
+            time.sleep(3)  # Пауза на 3 секунды, как рекомендует API
+        else:
+            print(f"Login failed with status code {response.status_code} and message {response.text}")
+            raise Exception("Failed to login")
 
 
 def get_session_key(username):
@@ -174,7 +179,7 @@ def add_in_goldman(request):
 
 @login_required(login_url='login')
 def mailbot(request):
-    login_request(request)
+    session = login_and_store_session(request.user.username, request)
     base_url = 'https://goldenbride.net'
 
     user = request.user

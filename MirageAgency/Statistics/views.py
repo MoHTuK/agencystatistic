@@ -186,9 +186,6 @@ def get_statistics_interval(request):
 @login_required(login_url='login')
 def statistics(request):
 
-    custom_admin_user_list = [920777, 918761, 918562, 900441, 912504, 920011, 914887, 913993, 878637, 917531, 916712,
-                              919673, 919395, 903279, 906192, 901480, 917537, 904524, 899701, 912607, 915089, 913075,
-                              917416, 914489, 893557, 917534, 883002, 832730, 899218, 851946, 895429, 895430]
     user = int(request.user.username)
 
     timezone = pytz.timezone('Europe/Kiev')
@@ -226,7 +223,7 @@ def statistics(request):
                                'max_date': tomorrow_valid, 'start_date': start_date, 'end_date': end_date,
                                'gifts_total': gifts_total, 'total_without_gifts': total_without_gifts,
                                'total_without_penalties': total_without_penalties, 'penalties': penalties,
-                               'custom_list': custom_admin_user_list, 'user': user})
+                               'user': user})
 
     if request.method == 'POST' and request.POST.get('selected_date'):
         result = get_statistics_date(request)
@@ -244,14 +241,13 @@ def statistics(request):
                                'max_date': tomorrow_valid, 'today_date': today_date, 'gifts_total': gifts_total,
                                'total_without_gifts': total_without_gifts,
                                'total_without_penalties': total_without_penalties, 'penalties': penalties,
-                               'custom_list': custom_admin_user_list, 'user': user})
+                               'user': user})
 
     return render(request, 'Statistics/main.html',
                   context={'transaction_list': transaction_list, 'total': total, 'lady_name': lady_name,
                            'max_date': tomorrow_valid, 'gifts_total': gifts_total,
                            'total_without_gifts': total_without_gifts, 'penalties': penalties,
-                           'total_without_penalties': total_without_penalties, 'custom_list': custom_admin_user_list,
-                           'user': user})
+                           'total_without_penalties': total_without_penalties, 'user': user})
 
 
 def login_request(request):

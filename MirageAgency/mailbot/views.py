@@ -123,6 +123,8 @@ def proxy_status(request):
     data = response.json()
     status = data['status']
     count = data.get('count', 0)
+    print(response.status_code)
+    print(response.text)
 
     return JsonResponse({'success': True, 'status': status, 'count': count})
 

@@ -22,7 +22,11 @@ $(document).ready(function() {
                             success: function(response) {
                                 console.log('Repeated status check:', response);
                                 // Если статус перестает быть пустым, останавливаем интервал
-                                if (response && response.status !== "") {
+                                if (response.status === 'limit') {
+                                    clearInterval(statusCheckInterval);
+                                    $('#mailingStatusIndicator').addClass('red').removeClass('green');
+                                    $('#mailingStatusText').text('Limit reached - Bot not working');
+                                } else if(response && response.status !== "") {
                                     clearInterval(statusCheckInterval);
                                     $('#mailingStatusIndicator').addClass('red').removeClass('green');
                                     $('#mailingStatusText').text('Bot not working');

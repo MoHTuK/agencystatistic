@@ -11,4 +11,5 @@ urlpatterns = [
     path('proxy/save_to_goldman', add_in_goldman, name='add_goldman'),
     path('proxy/status', proxy_status, name='proxy_status'),
     path('proxy/stop', proxy_stop, name='proxy_stop'),
+    path('proxy/get_goldmen_ids', proxy_get_goldmen_list, name='get_goldmen_ids'),
 ]

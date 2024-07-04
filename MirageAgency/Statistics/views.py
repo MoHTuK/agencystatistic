@@ -39,7 +39,7 @@ def get_statistics_today(request):
     except:
         lady_name = ''
     for transaction in response_data["list"]:
-        if Transaction.objects.filter(Date=transaction['date'], Lady_ID__username=transaction['ladyID']):
+        if Transaction.objects.filter(Date=transaction['date'], Lady_ID__username=transaction['ladyID'], Operation_type=transaction['operation']):
             continue
         else:
             transaction_data = Transaction(
@@ -95,7 +95,7 @@ def get_statistics_date(request):
     except:
         lady_name = ''
     for transaction in response_data["list"]:
-        if Transaction.objects.filter(Date=transaction['date'], Lady_ID__username=transaction['ladyID']):
+        if Transaction.objects.filter(Date=transaction['date'], Lady_ID__username=transaction['ladyID'], Operation_type=transaction['operation']):
             continue
         else:
             transaction_data = Transaction(
@@ -137,7 +137,6 @@ def get_statistics_interval(request):
     gifts_total = 0
     penalties_total = 0
 
-
     data = {
         "login": login,
         "pass": password,
@@ -153,7 +152,7 @@ def get_statistics_interval(request):
     except:
         lady_name = ''
     for transaction in response_data["list"]:
-        if Transaction.objects.filter(Date=transaction['date'], Lady_ID__username=transaction['ladyID']):
+        if Transaction.objects.filter(Date=transaction['date'], Lady_ID__username=transaction['ladyID'], Operation_type=transaction['operation']):
             continue
         else:
             transaction_data = Transaction(
@@ -185,7 +184,6 @@ def get_statistics_interval(request):
 
 @login_required(login_url='login')
 def statistics(request):
-
     user = int(request.user.username)
 
     timezone = pytz.timezone('Europe/Kiev')
@@ -250,33 +248,7 @@ def statistics(request):
                            'total_without_penalties': total_without_penalties, 'user': user})
 
 
-def login_request(request):
-    base_url = 'https://goldenbride.net'
-    login_url = f'{base_url}/goldenbride/services/login'
-    login_data = {
-        'username': request.user.username,
-        'userpass': request.POST.get('password'),
-    }
-
-    user_agent = UserAgent()
-    random_user_agent = user_agent.random
-
-    session = requests.Session()
-    session.headers.update({'User-Agent': random_user_agent})
-
-    # Аутентификация
-    response = session.post(login_url, data=login_data)
-
-    if response.ok:
-        # Сохранение кукис в Django session
-        request.session['web_cookies'] = requests.utils.dict_from_cookiejar(session.cookies)
-        request.session['user_agent'] = random_user_agent  # Сохранение User-Agent
-
-    return session
-
-
 def login_view(request):
-
     if request.user.is_authenticated:
         return redirect('statistics')
 

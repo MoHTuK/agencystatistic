@@ -62,7 +62,6 @@ def proxy_send_msg(request):
         # Если сессия не найдена, выполнить логин и сохранить сессию
         session = login_and_store_session(request.user.username, request)
 
-
     online_url = f'https://goldenbride.net/usermodule/services/agencyhelper?command=online'
 
     if request.method == 'POST':
@@ -123,8 +122,6 @@ def proxy_status(request):
     data = response.json()
     status = data['status']
     count = data.get('count', 0)
-    print(response.status_code)
-    print(response.text)
 
     return JsonResponse({'success': True, 'status': status, 'count': count})
 
@@ -146,6 +143,12 @@ def proxy_stop(request):
     status = data['status']
 
     return JsonResponse({'success': True, 'status': status})
+
+
+def proxy_get_goldmen_list(request):
+    goldmen_ids = list(GoldMan.objects.values_list('man_id', flat=True))
+
+    return JsonResponse({'goldmen_ids': goldmen_ids})
 
 
 def add_in_blacklist(request):

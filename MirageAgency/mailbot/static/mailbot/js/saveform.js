@@ -2,6 +2,45 @@ $(document).ready(function() {
 
     startStatusCheck()
 
+
+    function copyGoldManIDsToClipboard() {
+        const button = document.querySelector('.icon_btn');
+        const img = button.querySelector('.icon_img');
+        fetch('/proxy/get_goldmen_ids')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Сетевая ошибка, статус ошибки: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (!data.goldmen_ids) {
+                    throw new Error('Ответ не содержит ожидаемые данные');
+                }
+                // Используйте "\n" вместо ", " для форматирования каждого ID на новой строке
+                const ids = data.goldmen_ids.join("\n");
+                navigator.clipboard.writeText(ids)
+                    .then(() => {
+                        img.src = '/static/statistics/images/copy_done.png'; // Путь к вашему изображению после нажатия
+
+                        setTimeout(() => {
+                            img.src = '/static/statistics/images/copy.png'; // Вернуть исходное изображение
+                        }, 3000); // 5000 мс = 5 секунд
+                    })
+                    .catch(err => {
+                        console.error('Ошибка при копировании: ', err);
+                        alert('Ошибка при копировании данных в буфер обмена.');
+                    });
+            })
+            .catch(err => {
+                console.error('Ошибка при запросе данных: ', err);
+                alert('Ошибка: ' + err.message);
+            });
+    }
+
+    window.copyGoldManIDsToClipboard = copyGoldManIDsToClipboard; // Делаем функцию доступной глобально
+
+
     // Обработка отправки формы Blacklist
     $('.blacklist-form').on('submit', function(e) {
         e.preventDefault(); // Предотвращение стандартной отправки формы
@@ -132,7 +171,7 @@ $(document).ready(function() {
             },
             success: function(statusResponse) {
                 if (statusResponse && statusResponse.status) {
-                    if (['end', 'limit', 'Stop'].includes(statusResponse.status)) {
+                    if (['end', 'Stop'].includes(statusResponse.status)) {
                         clearInterval(statusCheckInterval);
                         $('#mailingStatusIndicator').addClass('red').removeClass('green');
                         $('#mailingStatusText').text('Bot not working');
@@ -148,6 +187,11 @@ $(document).ready(function() {
                             console.log('Status ended and Men Online is selected. Planning to restart mailing in 5 seconds.');
                             sendMessages()
                         }
+                    } else if(statusResponse.status === 'limit'){
+                        clearInterval(statusCheckInterval);
+                        $('#mailingStatusIndicator').addClass('red').removeClass('green');
+                        $('#mailingStatusText').text('Limit reached - Bot not working');
+                        console.log('Limit reached - stopping work');
                     }
                 } else {
                     $('#mailingStatusIndicator').addClass('green').removeClass('red');

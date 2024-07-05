@@ -108,6 +108,11 @@
                     {{ goldman_form.man_id }}
                     <button type="submit" name="submit_goldman" class="date_btn">Add man</button>
                 </form>
+                {% if user.username == '896176' %}
+                    <button type="button" onclick="copyGoldManIDsToClipboard()" class="icon_btn">
+                        <img src="/static/statistics/images/copy.png" alt="Copy" class="icon_img">
+                    </button>
+                {% endif %}
                 <img src="/static/statistics/images/goldman_icon.png"  class="mailbot_icon">
             </div>
         </div>

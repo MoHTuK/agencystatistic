@@ -58,6 +58,14 @@ def login_and_store_session(username, request):
 def proxy_send_msg(request):
     session = retrieve_session(request.user.username)
 
+    login = request.user.username
+    password = request.session.get('user_password', None)
+
+    data = {
+        "login": login,
+        "pass": password,
+    }
+
     if not session:
         # Если сессия не найдена, выполнить логин и сохранить сессию
         session = login_and_store_session(request.user.username, request)
@@ -73,7 +81,7 @@ def proxy_send_msg(request):
 
         if recipient_group == 'online_men':
             man_id_blacklist = Blacklist.objects.filter(lady_id=request.user.pk).values_list('man_id', flat=True)
-            man_id_response = session.get(online_url).text
+            man_id_response = requests.post(online_url, data=data).text
             man_id_list = json.loads(man_id_response)
 
             filtered_man_id_list = [man_id for man_id in man_id_list if man_id not in man_id_blacklist]

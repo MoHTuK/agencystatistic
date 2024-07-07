@@ -137,6 +137,7 @@ $(document).ready(function() {
                     console.log(response); // Вывод в консоль всего, что вернул сервер
                     $('#mailingStatusIndicator').addClass('green').removeClass('red');
                     $('#mailingStatusText').text('Bot working');
+                    console.log(`[${new Date().toLocaleString()}] Success start mesging`)
                     alert("Рассылка запущена успешно");
                     startStatusCheck();
 
@@ -150,6 +151,7 @@ $(document).ready(function() {
                 alert('Error processing your request');
                 $('#mailingStatusIndicator').addClass('red').removeClass('green');
                 $('#mailingStatusText').text('Ошибка обработки запроса');
+                console.log(`[${new Date().toLocaleString()}] Error send msg`)
             }
         });
     }
@@ -175,7 +177,7 @@ $(document).ready(function() {
                         clearInterval(statusCheckInterval);
                         $('#mailingStatusIndicator').addClass('red').removeClass('green');
                         $('#mailingStatusText').text('Bot not working');
-                        console.log('Stop work');
+                        console.log(`[${new Date().toLocaleString()}] Stop work`);
                         if ($('#recipient_group').val() === 'online_men' && shouldContinueMailing) {
 
                             $('#mailingStatusIndicator').addClass('green').removeClass('red');
@@ -184,19 +186,20 @@ $(document).ready(function() {
                             $('.mailbot_textarea').prop('readonly', false);
                             $('input[type=checkbox]').prop('disabled', false);  // Если есть чекбоксы для вложений или других параметров
 
-                            console.log('Status ended and Men Online is selected. Planning to restart mailing in 5 seconds.');
+                            console.log(`[${new Date().toLocaleString()}]Status ended and Men Online is selected. Planning to restart mailing in 5 seconds.`);
                             sendMessages()
                         }
                     } else if(statusResponse.status === 'limit'){
                         clearInterval(statusCheckInterval);
                         $('#mailingStatusIndicator').addClass('red').removeClass('green');
                         $('#mailingStatusText').text('Limit reached - Bot not working');
-                        console.log('Limit reached - stopping work');
+                        console.log(`[${new Date().toLocaleString()}] Limit reached - stopping work`);
                     }
                 } else {
                     $('#mailingStatusIndicator').addClass('green').removeClass('red');
                     $('#mailingStatusText').text('Bot working');
-                    console.log('Received an empty or invalid status response.');
+                    console.log(`[${new Date().toLocaleString()}] Received an empty or invalid status response.`);
+
                 }
             },
             error: function() {

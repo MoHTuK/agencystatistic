@@ -177,7 +177,7 @@ $(document).ready(function() {
                         clearInterval(statusCheckInterval);
                         $('#mailingStatusIndicator').addClass('red').removeClass('green');
                         $('#mailingStatusText').text('Bot not working');
-                        console.log(`[${new Date().toLocaleString()}] Stop work`);
+                        console.log(`[${new Date().toLocaleString()}] ${statusResponse.status}`);
                         if ($('#recipient_group').val() === 'online_men' && shouldContinueMailing) {
 
                             $('#mailingStatusIndicator').addClass('green').removeClass('red');

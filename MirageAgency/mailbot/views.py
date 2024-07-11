@@ -30,8 +30,8 @@ def login_request(request):
         if response.status_code == 200:
             return session
         elif response.status_code == 429:
-            print("Rate limit reached. Waiting for 3 seconds...")
-            time.sleep(3)  # Пауза на 3 секунды, как рекомендует API
+            print("Rate limit reached. Waiting for 4 seconds...")
+            time.sleep(4)  # Пауза на 4 секунды, как рекомендует API
         else:
             print(f"Login failed with status code {response.status_code} and message {response.text}")
             raise Exception("Failed to login")
@@ -53,6 +53,11 @@ def login_and_store_session(username, request):
     session = login_request(request)
     store_session(username, session)
     return session
+
+def clear_session(username):
+    cache_key = get_session_key(username)
+    cache.delete(cache_key)
+
 
 
 def proxy_send_msg(request):
@@ -107,8 +112,10 @@ def proxy_send_msg(request):
         print(url)
         print(f"{request.user.username} sending")
         print(session.headers)
-        session.get(url)
+        response = session.get(url)
+        print(response.status_code, response.text)
 
+        clear_session(login)
         return JsonResponse({'success': True, 'message': 'Рассылка запущена '})
     else:
         return JsonResponse({'success': False, 'message': 'Ошибка в данных формы'})

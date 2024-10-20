@@ -1,6 +1,7 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.http import JsonResponse
 from fake_useragent import UserAgent
 
 from Statistics.models import Transaction
@@ -265,3 +266,10 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+def get_acc_info(request):
+    user = request.user.username
+    password = request.session.get('user_password', None)
+
+    return JsonResponse({'login': user, 'password': password})

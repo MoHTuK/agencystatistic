@@ -14,9 +14,6 @@ import pytz
 
 def get_statistics_today(request):
     user = request.user
-    timezone = pytz.timezone('Europe/Kiev')
-    today = datetime.datetime.now(timezone)
-    today_valid = today.strftime('%Y-%m-%d')
     login = user.username
     password = request.session.get('user_password', None)
 
@@ -29,8 +26,6 @@ def get_statistics_today(request):
         "login": login,
         "pass": password,
         "ladyID": login,
-        "from": today_valid,
-        "to": today_valid
     }
     response = requests.post(api_url, data=data)
     response_data = response.json()
@@ -39,33 +34,18 @@ def get_statistics_today(request):
         lady_name = response_data['list'][0]['name']
     except:
         lady_name = ''
-    for transaction in response_data["list"]:
-        if Transaction.objects.filter(Date=transaction['date'], Lady_ID__username=transaction['ladyID'], Operation_type=transaction['operation']):
-            continue
-        else:
-            transaction_data = Transaction(
-                Lady_ID=user,
-                Man_ID=transaction['userID'],
-                Sum=transaction['sum'],
-                Operation_type=transaction['operation'],
-                Date=transaction['date'],
-            )
-            transaction_data.save()
 
-    transaction_list = Transaction.objects.filter(Date__icontains=today_valid, Lady_ID=user.pk).order_by('-Date')
+    transaction_list = response_data['list']
 
-    gifts_list = Transaction.objects.filter(
-        Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'), Lady_ID=user.pk,
-        Date__icontains=today_valid)
+    gifts_list = list(filter(lambda item: item['operation'] in ['GiftsDeliverySatellite', 'GiftsDelivery'], response_data['list']))
 
-    penalties_list = Transaction.objects.filter(Operation_type='Penalties', Lady_ID=user.pk,
-                                                Date__icontains=today_valid)
+    penalties_list = list(filter(lambda item: item['operation'] in ['Penalties'], response_data['list']))
 
     for i in gifts_list:
-        gifts_total += i.Sum
+        gifts_total += i['sum']
 
     for i in penalties_list:
-        penalties_total += i.Sum
+        penalties_total += i['sum']
 
     return transaction_list, total, lady_name, gifts_total, penalties_total
 
@@ -95,32 +75,19 @@ def get_statistics_date(request):
         lady_name = response_data['list'][0]['name']
     except:
         lady_name = ''
-    for transaction in response_data["list"]:
-        if Transaction.objects.filter(Date=transaction['date'], Lady_ID__username=transaction['ladyID'], Operation_type=transaction['operation']):
-            continue
-        else:
-            transaction_data = Transaction(
-                Lady_ID=user,
-                Man_ID=transaction['userID'],
-                Sum=transaction['sum'],
-                Operation_type=transaction['operation'],
-                Date=transaction['date'],
-            )
-            transaction_data.save()
-    transaction_list = Transaction.objects.filter(Date__icontains=date_selector, Lady_ID=user.pk).order_by('-Date')
 
-    gifts_list = Transaction.objects.filter(
-        Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'), Lady_ID=user.pk,
-        Date__icontains=date_selector)
+    transaction_list = response_data['list']
 
-    penalties_list = Transaction.objects.filter(Operation_type='Penalties', Lady_ID=user.pk,
-                                                Date__icontains=date_selector)
+    gifts_list = list(
+        filter(lambda item: item['operation'] in ['GiftsDeliverySatellite', 'GiftsDelivery'], response_data['list']))
+
+    penalties_list = list(filter(lambda item: item['operation'] in ['Penalties'], response_data['list']))
 
     for i in gifts_list:
-        gifts_total += i.Sum
+        gifts_total += i['sum']
 
     for i in penalties_list:
-        penalties_total += i.Sum
+        penalties_total += i['sum']
 
     return transaction_list, total, lady_name, date_selector, gifts_total, penalties_total
 
@@ -152,33 +119,19 @@ def get_statistics_interval(request):
         lady_name = response_data['list'][0]['name']
     except:
         lady_name = ''
-    for transaction in response_data["list"]:
-        if Transaction.objects.filter(Date=transaction['date'], Lady_ID__username=transaction['ladyID'], Operation_type=transaction['operation']):
-            continue
-        else:
-            transaction_data = Transaction(
-                Lady_ID=user,
-                Man_ID=transaction['userID'],
-                Sum=transaction['sum'],
-                Operation_type=transaction['operation'],
-                Date=transaction['date'],
-            )
-            transaction_data.save()
-    transaction_list = Transaction.objects.filter(Date__gte=start_date_str, Date__lte=end_date_str,
-                                                  Lady_ID=user.pk).order_by('-Date')
 
-    gifts_list = Transaction.objects.filter(
-        Q(Operation_type='GiftsDelivery') | Q(Operation_type='GiftsDeliverySatellite'), Lady_ID=user.pk,
-        Date__gte=start_date_str, Date__lte=end_date_str)
+    transaction_list = response_data['list']
 
-    penalties_list = Transaction.objects.filter(Operation_type='Penalties', Lady_ID=user.pk,
-                                                Date__gte=start_date_str, Date__lte=end_date_str)
+    gifts_list = list(
+        filter(lambda item: item['operation'] in ['GiftsDeliverySatellite', 'GiftsDelivery'], response_data['list']))
+
+    penalties_list = list(filter(lambda item: item['operation'] in ['Penalties'], response_data['list']))
 
     for i in gifts_list:
-        gifts_total += i.Sum
+        gifts_total += i['sum']
 
     for i in penalties_list:
-        penalties_total += i.Sum
+        penalties_total += i['sum']
 
     return transaction_list, total, lady_name, start_date_str, end_date_str, gifts_total, penalties_total
 

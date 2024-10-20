@@ -11,7 +11,6 @@
     <link rel="icon" type="image/png" sizes="96x96" href="{% static 'statistics/images/favicon-96x96.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'statistics/images/favicon-16x16.png' %}">
     <link type='text/css' href='{% static "statistics/css/style.css" %}' rel='stylesheet' >
-    <script src="{% static 'statistics/js/statistics.js' %}"></script>
 </head>
 <body>
     <header>
@@ -81,7 +80,6 @@
                 <table class="table-content">
                     <thead>
                         <tr>
-                            <th><p>№</p></th>
                             <th><p>Man id</p></th>
                             <th><p>Lady id</p></th>
                             <th><p>Date</p></th>
@@ -92,12 +90,11 @@
                     <tbody>
                         {% for i in transaction_list %}
                         <tr>
-                            <td>{{ i.pk}}</td>
-                            <td>{{ i.Man_ID}}</td>
-                            <td>{{ i.Lady_ID}}</td>
-                            <td>{{ i.Date|slice:"0:16"}}</td>
-                            <td>{{ i.Operation_type}}</td>
-                            <td>{{ i.Sum}}</td>
+                            <td>{{ i.userID }}</td>
+                            <td>{{ i.ladyID }}</td>  <!-- исправь имя ключа на 'ladyID', если оно так называется -->
+                            <td>{{ i.date|slice:"0:16" }}</td>  <!-- корректный доступ к полю 'date' -->
+                            <td>{{ i.operation }}</td>  <!-- используем 'operation' для типа операции -->
+                            <td>{{ i.sum }}</td>  <!-- доступ к сумме -->
                         </tr>
                     {% endfor %}
                     </tbody>

@@ -22,7 +22,19 @@ body {
     background-attachment: fixed;
     background-repeat: no-repeat;
 }
+.lady_img {
+    width: 67px;
+    height: 110px;
+}
 .body_wrapper {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    padding: 30px;
+}
+.body_wrapper_mailbot {
     width: 100%;
     margin: 0 auto;
     display: flex;
@@ -47,10 +59,179 @@ body {
     font-size: 2rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
+.container_mailbot {
+    width: 73%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 35px;
+}
+.container_mailbot .top_mail {
+    width: 100%;
+    border-bottom: solid rgba(255, 255, 255, 0.3);
+}
+.container_mailbot .bottom_media {
+    width: 100%;
+    margin-top: 20px;
+}
+.container_mailbot .bottom_media .photo_grid {
+    display: flex;
+    justify-content: center; /* Центрирует дочерние элементы по горизонтали */
+    flex-wrap: wrap; /* Позволяет элементам переноситься на следующую строку */
+    gap: 10px; /* Устанавливает отступы между элементами */
+    padding: 0 10px; /* Устанавливает отступы по краям контейнера */
+    margin-bottom: 30px;
+}
+.container_right {
+    width: 25%;
+}
+.container_mailbot.right {
+    position: relative;
+    width: 100%;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+.status-indicator {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    margin-left: 20px;
+}
+
+.status-indicator-block{
+    display: flex;
+    align-items: center;
+    position: relative; /* Делаем родительский блок относительным */
+    padding-left: 40px; /* Обеспечиваем пространство для индикатора */
+}
+.status-text{
+    font-weight: 600;
+    color: #fff;
+    opacity: 0.8;
+    font-size: 1.2rem;
+    margin-left: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+    flex-grow: 1; /* Элемент займет всё доступное пространство */
+
+}
+.green {
+    background-color: #00e600;  /* Светло-зеленый */
+    animation: pulse 1.5s infinite;
+}
+
+.red {
+    background-color: #ff0019;  /* Светло-красный */
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1) translateY(-50%); /* Обеспечиваем стабильное вертикальное позиционирование */
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2) translateY(-50%); /* Сохраняем вертикальное позиционирование постоянным */
+        opacity: 0.85;
+    }
+}
+
+.icon_btn {
+    position: absolute;
+    top: 62%;
+    left:20px;
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    background-color: #ffe6ff;
+}
+.icon_btn:hover{
+    background-color: #ffccff;
+}
+.icon_img {
+    width: 30px;
+    height: 30px;
+    display: center;  /* Убедитесь, что изображение полностью заполняет кнопку */
+}
+.mailbot_textarea {
+    height: 200px;
+    width: 100%;
+    line-height: normal;
+    padding: .8rem;
+    resize: none;
+    background: #ffe6ff;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.mailbot_textarea:hover {
+    background: #ffccff;
+}
+.recipient-selector {
+    display: flex;
+    align-items: center; /* Центрировать элементы по вертикали */
+    justify-content: space-between; /* Распределить пространство между элементами */
+    margin-bottom: 10px; /* Отступ от заголовка до текстовой области */
+}
+.recipient-selector select {
+    height: 48px;
+    width: 20%;
+    padding: 0.8rem;
+    background: #ffe6ff;
+    border-radius: 10px;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="rgba(0,0,0,0.54)" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.8em top 50%, 0;
+    background-size: 1.25em auto, 100%;
+}
+.recipient-selector select option{
+    height: 48px;
+    padding: 0.8rem;
+    background: #ffe6ff;
+}
+.recipient-selector select:hover {
+    background: #ffccff;
+}
+
+label {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px; /* Отступ снизу */
+    font-weight: 1000;
+    color: #fff;
+    opacity: 1;
+    font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+}
 .body_block {
     width: 17%;
 }
 .body_block.right .date_container{
+    margin-bottom: 50px;
+}
+
+.body_block .user_info{
     margin-bottom: 50px;
 }
 .date_container {
@@ -62,6 +243,7 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.3);
 }
 .user_info {
+    position: relative;
     width: 100% !important;
     padding: 20px;
     background: rgba(255, 255, 255, 0.3);
@@ -69,6 +251,13 @@ body {
     border-left: 1px solid rgba(255, 255, 255, 0.3);
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     text-align: center;
+}
+.user_info img{
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 40px;
+    height: 40px;
 }
 .user_info p {
     font-weight: 600;
@@ -189,6 +378,7 @@ header li a:hover {
 .img__button{
     display: flex;
     align-items: center;
+    margin-left: 30px;
 }
 .btn__icon{
     position: absolute;
@@ -196,6 +386,13 @@ header li a:hover {
     bottom: -10px;
     width: 35px;
     height: 35px;
+}
+.mailbot_icon {
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 70px;
+    height: 70px;
 }
 .date_btn{
     display: block;
@@ -216,6 +413,80 @@ header li a:hover {
 }
 .date_btn:hover{
     background-color: #ffccff;
+}
+.photo-checkbox {
+  position: relative;
+  display: inline-block;
+  margin: 5px;
+}
+
+.photo-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.photo-checkbox img {
+  width: 100px; /* Подстроить ширину под ваш дизайн */
+  height: auto;
+  transition: box-shadow 0.3s, transform 0.3s;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #ddd; /* Легкая тень в невыбранном состоянии */
+}
+
+.photo-checkbox .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.6); /* Легкий белый наложение */
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: #4CAF50; /* Зеленый цвет галочки */
+}
+
+.photo-checkbox input[type="checkbox"]:checked + img {
+  transform: scale(1.05); /* Увеличение при выборе */
+  box-shadow: 0 0 20px 8px #32CD32;
+}
+
+.photo-checkbox input[type="checkbox"]:checked + .checkmark {
+  opacity: 1;
+}
+.disabled {
+    pointer-events: none;  // Отключаем события указателя, что делает элемент некликабельным
+    opacity: 0.5;  // Снижаем прозрачность для визуального эффекта
+    color: red;
+}
+.container_mailbot .number_input {
+    display: block;
+    margin: 5px auto;
+    padding: 9px 25px;
+    border: none;
+    border-radius: 200px;
+    cursor: pointer;
+    transition: all 0.3 ease 0s;
+    background-color: #ffe6ff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    color: black;
+    text-decoration: none;
+    opacity: 1;
+    font-size: 1.3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.container_mailbot .number_input:hover {
+    background: #ffccff;
+    box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
+}
+.number_input::-webkit-inner-spin-button,
+.number_input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 input[type="date"]{
     display: block;
@@ -248,5 +519,6 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+
 
 

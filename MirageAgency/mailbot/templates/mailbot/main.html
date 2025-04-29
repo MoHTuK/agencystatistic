@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>InLove.Agency Mailbot</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'statistics/images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'statistics/images/favicon-96x96.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'statistics/images/favicon-16x16.png' %}">
+    <link type='text/css' href='{% static "statistics/css/style.css" %}' rel='stylesheet' >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="/static/statistics/images/logo.png" alt="header-img" class="header__left">
+            <div class="logo__text"><p>InLove.Agency<br>Statistics</p></div>
+        </div>
+        <div class="center__buttons">
+            <ul>
+                <li>
+                    <a href="{% url 'statistics' %}" class="img__button">
+                        <p>Statistics</p>
+                        <img src="/static/statistics/images/statistic_icon.png" alt="header-img" class="btn__icon">
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'mailbot' %}" id="mailbotButton" class="img__button">
+                        <p>MailBot</p>
+                        <img src="/static/statistics/images/mailbot_icon.png" alt="header-img" class="btn__icon">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="right__buttons">
+            <ul>
+                <li>
+                    <a href="{% url 'logout' %}" class="img__button">
+                        <p>Exit </p>
+                        <img src="/static/statistics/images/exit_icon.png" alt="header-img" class="btn__icon">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <script src="{% static 'mailbot/js/mailbtn.js' %}"></script>
+    </header>
+    <div class="body_wrapper_mailbot">
+        <div class="container_mailbot">
+            <form method="POST" class="pre_sending-form">
+                {% csrf_token %}
+            <div class="top_mail">
+                <div class="recipient-selector">
+                    <label>Compose mail Form</label>
+                    <select name="recipient_group" id="recipient_group">
+                        <option value="online_men">Men Online</option>
+                        <option value="goldman">Goldmans</option>
+                        <option value="custom_list">Custom list</option>
+                    </select>
+                </div>
+                <textarea placeholder="Hello" class="mailbot_textarea" name="messageText"></textarea>
+
+                <div id="additional_textarea" style="display: none;">
+                    <label>Custom list</label>
+                    <textarea placeholder="Enter custom list" class="mailbot_textarea" name="customListText"></textarea>
+                </div>
+
+            </div>
+            <div class="bottom_media">
+                <label>Media</label>
+                <div class="photo_grid" id="photos-form">
+                    {% for item in img_list %}
+                    <label class="photo-checkbox">
+                        <input type="checkbox" name="selected_photos" value="{{ item.image_id }}" class="attachment" onchange="checkLimit(this)"/>
+                        <img src="{{ item.image_url }}" alt="Photo {{ loop.index }}">
+                    </label>
+                {% endfor %}
+                </div>
+                <button type="submit" class="date_btn" id="sendButton">Start sending</button>
+            </div>
+            </form>
+        </div>
+        <div class="container_right">
+            <div class="container_mailbot right">
+                <label>{{ user.first_name }}</label>
+                <div class="status-indicator-block">
+                    <div id="mailingStatusIndicator" class="status-indicator red"></div>
+                    <div id="mailingStatusText" class="status-text">Bot not working</div>
+                    <button id="stopBotButton" class="date_btn">Stop Bot</button>
+                </div>
+            </div>
+            <div class="container_mailbot right">
+                <label>Add to Blacklist</label>
+                <form method="POST" class="blacklist-form">
+                    {% csrf_token %}
+                    {{ blacklist_form.man_id }}
+                    <button type="submit" name="submit_blacklist" class="date_btn">Add man</button>
+                </form>
+                <img src="/static/statistics/images/blacklist_icon.png"  class="mailbot_icon">
+            </div>
+            <div class="container_mailbot right">
+                <label>Add to Goldman</label>
+                <form method="POST" class="goldman-form">
+                    {% csrf_token %}
+                    {{ goldman_form.man_id }}
+                    <button type="submit" name="submit_goldman" class="date_btn">Add man</button>
+                </form>
+                {% if user.username == '896176' %}
+                    <button type="button" onclick="copyGoldManIDsToClipboard()" class="icon_btn">
+                        <img src="/static/statistics/images/copy.png" alt="Copy" class="icon_img">
+                    </button>
+                {% endif %}
+                <img src="/static/statistics/images/goldman_icon.png"  class="mailbot_icon">
+            </div>
+        </div>
+
+    </div>
+    <script src="{% static 'mailbot/js/custom_list.js' %}"></script>
+    <script src="{% static 'mailbot/js/photos.js' %}"></script>
+    <script src="{% static 'mailbot/js/saveform.js' %}"></script>
+    <script src="{% static 'mailbot/js/statuscheck.js' %}"></script>
+</body>
+</html>

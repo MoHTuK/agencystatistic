@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Statistics.apps.StatisticsConfig',
+    'mailbot.apps.MailbotConfig',
 ]
 
 MIDDLEWARE = [
@@ -86,6 +88,15 @@ WSGI_APPLICATION = 'MirageAgency.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=1800)
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

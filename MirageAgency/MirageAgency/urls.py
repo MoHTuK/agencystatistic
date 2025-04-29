@@ -21,6 +21,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Statistics.urls')),
+    path('', include('mailbot.urls')),
 ]
 
 if settings.DEBUG:

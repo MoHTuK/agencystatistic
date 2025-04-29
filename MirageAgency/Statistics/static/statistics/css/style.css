@@ -509,6 +509,10 @@ input[type="date"]:hover{
     background: #ffccff;
     box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, 0.2);
 }
+.lady_img {
+    height: 80px;
+    border: 2px solid #f00; /* Пример: добавить рамку */
+}
 input:focus,
 select:focus,
 textarea:focus,
